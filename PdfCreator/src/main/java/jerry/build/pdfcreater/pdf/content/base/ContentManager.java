@@ -15,12 +15,17 @@ public class ContentManager {
         ContentStyle contentStyle = new ContentStyle(pageHandle.getPageStyle().getWidth(), pageHandle.getPageStyle().getHeight());
         contentStyle.setHeightMode(ContentStyle.MATCH_PARENT);
         contentStyle.setWidthMode(ContentStyle.MATCH_PARENT);
-        contentGroup = new ContentGroup(contentStyle,pageHandle);
+        contentGroup = new ContentGroup(contentStyle);
+        contentGroup.setPageHandle(pageHandle);
     }
 
     public Row addRow(RowStyle rowStyle) {
         Row row = new Row(rowStyle);
         contentGroup.addContent(row);
         return row;
+    }
+
+    public void addContent(ContentGroup content){
+        contentGroup.addContent(content);
     }
 }

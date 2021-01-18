@@ -19,4 +19,12 @@ public class PageHandle {
     public PageStyle getPageStyle() {
         return pageStyle;
     }
+
+    public int getWidth() {
+        return  pageStyle.getWidth();
+    }
+
+    public int getHeight() {
+        return pageStyle.getHeight();
+    }
 }

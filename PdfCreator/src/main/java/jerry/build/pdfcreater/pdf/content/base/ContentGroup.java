@@ -15,182 +15,141 @@ public class ContentGroup {
     private PageHandle pageHandle;
     private ContentGroup parent;
     private ContentStyle contentStyle;
+    private boolean isMeasure = false;
 
     public ContentGroup(ContentStyle contentStyle) {
         this.contentStyle = contentStyle;
     }
 
-    public ContentGroup(ContentStyle contentStyle, PageHandle pageHandle) {
-        this.contentStyle = contentStyle;
+    public void setPageHandle(PageHandle pageHandle) {
         this.pageHandle = pageHandle;
-        if(parent==null){
+        if (pageHandle != null && !isMeasure) {
             measureDefault(contentStyle);
         }
     }
 
-    private void setPageHandle(PageHandle pageHandle) {
-        this.pageHandle = pageHandle;
-    }
-
-    private void setParent(ContentGroup parent){
+    public void setParent(ContentGroup parent) {
         this.parent = parent;
+        if (pageHandle != null && !isMeasure) {
+            measureDefault(contentStyle);
+        }
     }
 
-    protected void measureDefault(ContentStyle contentStyle){
+    protected void measureDefault(ContentStyle contentStyle) {
+        isMeasure = true;
+
+        boolean haveParent = parent != null;
+
         int widthMode = contentStyle.getWidthMode();
         int heightMode = contentStyle.getHeightMode();
-
-        int width = 0;
-        int height = 0;
-        if(parent != null){
-            width = parent.getWidth();
-        }else{
-            width = pageHandle.getPageStyle().getWidth();
-        }
-
-        if(parent != null){
-            height = parent.getHeight();
-        }else{
-            height = pageHandle.getPageStyle().getHeight();
-        }
-
 
         int measureWidth = 0;
         int measureHeight = 0;
         //测量实际宽度
-        if(widthMode == ContentStyle.SELF){
-            if(parent != null){
-                if(contentStyle.getMarginLeft()
-                        +contentStyle.getMarginRight()>width){
-                    measureWidth = 0;
-                }else{
-                    measureWidth = width
-                            -contentStyle.getMarginRight()
-                            -contentStyle.getMarginLeft();
-                }
-            }else{
-                if(contentStyle.getMarginLeft()
-                        +contentStyle.getMarginRight()
-                        +parent.getContentStyle().getPaddingLeft()
-                        +parent.getContentStyle().getPaddingRight()>width){
-                    measureWidth = 0;
-                }else{
-                    measureWidth = width
-                            -contentStyle.getMarginRight()
-                            -contentStyle.getMarginLeft()
-                            -parent.getContentStyle().getPaddingLeft()
-                            -parent.getContentStyle().getPaddingRight();
-                }
+        if (widthMode == ContentStyle.SELF) {
+            if (haveParent) {
+                measureWidth = Math.max(getWidth() - (contentStyle.getMarginLeft() + contentStyle.getMarginRight() + parent.getContentStyle().getPaddingRight() + parent.getContentStyle().getPaddingLeft()), 0);
+            } else {
+                measureWidth = Math.max(getWidth() - (contentStyle.getMarginLeft() + contentStyle.getMarginRight()), 0);
             }
-
-        }else if(widthMode == ContentStyle.WRAP_CONTENT){
-            measureWidth = measureChildrenW();
-        }else if(widthMode == ContentStyle.MATCH_PARENT){
-            if(parent == null){
-                if(contentStyle.getMarginLeft()
-                        +contentStyle.getMarginRight()>width){
-                    measureWidth = 0;
-                }else{
-                    measureWidth = width
-                            -contentStyle.getMarginRight()
-                            -contentStyle.getMarginLeft();
-                }
-            }else{
-                if(contentStyle.getMarginLeft()
-                        +contentStyle.getMarginRight()
-                        +parent.getContentStyle().getPaddingLeft()
-                        +parent.getContentStyle().getPaddingRight()>width){
-                    measureWidth = 0;
-                }else{
-                    measureWidth = width
-                            -contentStyle.getMarginRight()
-                            -contentStyle.getMarginLeft()
-                            -parent.getContentStyle().getPaddingLeft()
-                            -parent.getContentStyle().getPaddingRight();
-                }
+        } else if (widthMode == ContentStyle.WRAP_CONTENT) {
+            measureWidth = measureChildren()[0];
+        } else if (widthMode == ContentStyle.MATCH_PARENT) {
+            if (haveParent) {
+                measureWidth = Math.max(parent.getWidth() - (contentStyle.getMarginLeft() + contentStyle.getMarginRight() + parent.getContentStyle().getPaddingRight() + parent.getContentStyle().getPaddingLeft()), 0);
+            } else {
+                measureWidth = Math.max(pageHandle.getWidth() - (contentStyle.getMarginLeft() + contentStyle.getMarginRight()), 0);
             }
         }
 
 
         //测量实际高度
-        if(heightMode == ContentStyle.SELF){
-            measureHeight = height- contentStyle.getMarginTop()- contentStyle.getMarginBottom();
-        }else if(heightMode == ContentStyle.WRAP_CONTENT){
-            measureHeight = measureChildrenH();
-        }else if(widthMode == ContentStyle.MATCH_PARENT){
-            measureHeight = height- contentStyle.getMarginTop()- contentStyle.getMarginBottom();
+        if (heightMode == ContentStyle.SELF) {
+            if (haveParent) {
+                measureHeight = Math.max(getHeight() - (contentStyle.getMarginTop() + contentStyle.getMarginBottom() + parent.getContentStyle().getPaddingLeft() + parent.getContentStyle().getPaddingRight()), 0);
+            } else {
+                measureHeight = Math.max(getHeight() - (contentStyle.getMarginTop() + contentStyle.getMarginBottom()), 0);
+            }
+        } else if (heightMode == ContentStyle.WRAP_CONTENT) {
+            measureHeight = measureChildren()[1];
+        } else if (widthMode == ContentStyle.MATCH_PARENT) {
+            if (haveParent) {
+                measureHeight = parent.getHeight() - contentStyle.getMarginTop() - contentStyle.getMarginBottom();
+            } else {
+                measureHeight = pageHandle.getHeight() - contentStyle.getMarginTop() - contentStyle.getMarginBottom();
+            }
         }
 
-        setMeasureValue(measureWidth,measureHeight);
+        setMeasureValue(measureWidth, measureHeight);
         measure(contentStyle);
         drawDefault();
-        drawChildren();
     }
 
-    private void drawChildren(){
-        for (ContentGroup content:contents) {
-            content.drawDefault();
-        }
-    }
-
-    private int measureChildrenW(){
+    private int[] measureChildren() {
         int width = 0;
-        for (ContentGroup content:contents) {
+        int height = 0;
+
+        for (ContentGroup content : contents) {
             content.measureDefault(contentStyle);
             width = width + content.getWidth();
-        }
-        return width;
-    }
-
-    private int measureChildrenH(){
-        int height = 0;
-        for (ContentGroup content:contents) {
-            content.measureDefault(contentStyle);
             height = height + content.getHeight();
         }
-        return height;
+        return new int[]{width, height};
     }
 
-    protected void drawDefault(){
+
+    protected void drawDefault() {
+        boolean haveParent = parent != null;
+
         Paint paint = new Paint();
         paint.setDither(true);
         paint.setAntiAlias(true);
         paint.setColor(contentStyle.getBackgroundColor());
-        int left = contentStyle.getMarginLeft();
-        int top = contentStyle.getMarginTop();
-        int right = contentStyle.getWidth()+left;
-        int bottom = contentStyle.getHeight()+top;
+        int left = 0;
+        int top = 0;
+        int right = 0;
+        int bottom = 0;
+
+        if (haveParent) {
+            left = contentStyle.getMarginLeft()+parent.getContentStyle().getMarginLeft()+parent.getContentStyle().getPaddingLeft();
+            top = contentStyle.getMarginTop()+parent.getContentStyle().getMarginTop()+parent.getContentStyle().getPaddingTop();
+            right = contentStyle.getWidth() + left;
+            bottom = contentStyle.getHeight() + top;
+        } else {
+
+        }
 
         Rect rect = new Rect(left, top, right, bottom);
-        pageHandle.getCanvas().drawRect(rect,paint);
+        pageHandle.getCanvas().drawRect(rect, paint);
     }
 
-    protected void measure(ContentStyle contentStyle){}
-    protected void draw(Canvas canvas){}
+    protected void measure(ContentStyle contentStyle) {
+    }
 
-    public void addContent(ContentGroup content){
-        content.setParent(parent);
+    protected void draw(Canvas canvas) {
+    }
+
+    public void addContent(ContentGroup content) {
+        content.setParent(this);
         content.setPageHandle(pageHandle);
-        content.measureDefault(content.contentStyle);
         contents.add(content);
-        measureDefault(contentStyle);
     }
 
-    protected void setMeasureValue(int width, int height){
+    protected void setMeasureValue(int width, int height) {
         contentStyle.setWidth(width);
         contentStyle.setHeight(height);
     }
 
-    protected int getWidth(){
+    protected int getWidth() {
         return contentStyle.getWidth();
     }
 
-    protected int getHeight(){
+    protected int getHeight() {
         return contentStyle.getHeight();
     }
 
 
-    public ContentStyle getContentStyle(){
+    public ContentStyle getContentStyle() {
         return contentStyle;
     }
 

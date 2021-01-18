@@ -1,6 +1,7 @@
 package jerry.build.pdfcreater.model;
 
 import jerry.build.pdfcreater.bean.PageHandle;
+import jerry.build.pdfcreater.pdf.content.base.ContentGroup;
 import jerry.build.pdfcreater.pdf.content.base.ContentManager;
 
 /**
@@ -13,6 +14,10 @@ public abstract class DefaultTemplate {
     public void setPageHandle(PageHandle pageHandle) {
         this.pageHandle = pageHandle;
         contentManager = new ContentManager(pageHandle);
+    }
+
+    public void addContent(ContentGroup content){
+        contentManager.addContent(content);
     }
 
     /**

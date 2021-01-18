@@ -9,6 +9,8 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,6 +24,7 @@ import jerry.build.pdfcreater.listener.CreateListener;
 public class MainActivity extends AppCompatActivity {
     WebView webView;
     FloatingActionButton button;
+
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
