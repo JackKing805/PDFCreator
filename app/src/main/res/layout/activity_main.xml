@@ -15,10 +15,14 @@
         app:cardCornerRadius="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <WebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <WebView
+               android:id="@+id/webView"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"/>
+       </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

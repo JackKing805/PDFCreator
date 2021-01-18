@@ -111,8 +111,8 @@ public class ContentGroup {
         int bottom = 0;
 
         if (haveParent) {
-            left = contentStyle.getMarginLeft()+parent.getContentStyle().getMarginLeft()+parent.getContentStyle().getPaddingLeft();
-            top = contentStyle.getMarginTop()+parent.getContentStyle().getMarginTop()+parent.getContentStyle().getPaddingTop();
+            left = contentStyle.getMarginLeft() + parent.getContentStyle().getMarginLeft() + parent.getContentStyle().getPaddingLeft();
+            top = contentStyle.getMarginTop() + parent.getContentStyle().getMarginTop() + parent.getContentStyle().getPaddingTop();
             right = contentStyle.getWidth() + left;
             bottom = contentStyle.getHeight() + top;
         } else {
