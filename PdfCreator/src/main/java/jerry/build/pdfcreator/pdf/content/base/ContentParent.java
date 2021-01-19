@@ -1,5 +1,8 @@
 package jerry.build.pdfcreator.pdf.content.base;
 
+import android.graphics.Canvas;
+
+import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 
 public class ContentParent {
@@ -9,7 +12,6 @@ public class ContentParent {
     public ContentParent(ContentStyle contentStyle) {
         this.contentStyle = contentStyle;
     }
-
 
     /**
      * 测量自己真实宽高
@@ -67,6 +69,14 @@ public class ContentParent {
 
     public int getPaddingBottom() {
         return contentStyle.getPaddingBottom();
+    }
+
+    public int getWidthMode(){
+        return contentStyle.getWidthMode();
+    }
+
+    public int getHeightMode(){
+        return contentStyle.getHeightMode();
     }
 
     public void setMeasureStyle(int width,int height){

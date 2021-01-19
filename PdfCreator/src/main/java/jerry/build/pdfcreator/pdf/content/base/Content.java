@@ -16,8 +16,8 @@ public class Content extends ContentParent {
 
     @Override
     public void measureDefault() {
-        int widthMode = getContentStyle().getWidthMode();
-        int heightMode = getContentStyle().getHeightMode();
+        int widthMode = getWidthMode();
+        int heightMode = getHeightMode();
 
         int measureWidth = 0;
         int measureHeight = 0;
