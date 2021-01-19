@@ -1,8 +1,12 @@
 package jerry.build.pdfcreator.pdf.content.base;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
+import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 
 public class Content extends ContentParent {
     private static final String TAG = "ContentParent";
@@ -15,7 +19,7 @@ public class Content extends ContentParent {
 
 
     @Override
-    public void measureDefault() {
+    protected void measureDefault() {
         int widthMode = getWidthMode();
         int heightMode = getHeightMode();
 
@@ -23,29 +27,78 @@ public class Content extends ContentParent {
         int measureHeight = 0;
 
         if (widthMode == ContentStyle.MATCH_PARENT) {
-            measureWidth = getWidth() - getParentMPLeft() - getParentMPRight();
+            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight();
         } else if (widthMode == ContentStyle.WRAP_CONTENT) {
 
         } else if (widthMode == ContentStyle.SELF) {
-            measureWidth = getWidth();
+            if(getWidth()+getMarginLeft()+getMarginRight()>getParentWidth()){
+                measureWidth = getParentWidth()-getMarginLeft()-getMarginRight();
+            }else if(getWidth()+getMarginLeft()+getMarginRight()<getParentWidth()){
+                measureWidth = getWidth();
+            }else if(getWidth()+getMarginLeft()>getParentWidth()){
+                measureWidth = getParentWidth() - getMarginLeft();
+            }else{
+                measureWidth = getWidth();
+            }
         }
 
 
         if (heightMode == ContentStyle.MATCH_PARENT) {
-            measureHeight = getHeight() - getParentMPTop() - getParentMPBottom();
+            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom();
         } else if (heightMode == ContentStyle.WRAP_CONTENT) {
 
 
         } else if (heightMode == ContentStyle.SELF) {
-            measureHeight = getHeight();
+            if(getHeight()+getMarginTop()+getMarginBottom()>getParentHeight()){
+                measureHeight = getParentHeight()-getMarginTop()-getMarginBottom();
+            }else if(getHeight()+getMarginTop()+getMarginBottom()<getParentHeight()){
+                measureHeight = getHeight();
+            }else if(getWidth()+getMarginTop()>getParentHeight()){
+                measureHeight = getParentHeight() - getMarginTop();
+            }else{
+                measureHeight = getHeight();
+            }
         }
-
-        setMeasureStyle(measureWidth,measureHeight);
+        measure();
+        setMeasureStyle(measureWidth, measureHeight);
+        drawDefault(PageHandleHolder.newInstance().getCanvas());
     }
 
     @Override
-    public void drawDefault() {
+    protected void drawDefault(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setDither(true);
+        paint.setAntiAlias(true);
+        paint.setColor(getContentStyle().getBackgroundColor());
+        int left = getParentMPLeft()+getMarginLeft();
+        int top = getParentMPTop()+getMarginTop();
+        int right = left+getWidth();
+        int bottom = top+getHeight();
+        System.out.println("__________________");
+        System.out.println("________left:"+left);
+        System.out.println("________top:"+top);
+        System.out.println("________right:"+right);
+        System.out.println("________bottom:"+bottom);
+        Rect rect = new Rect(left,top,right,bottom);
+        canvas.save();
+        canvas.clipRect(rect);
+        canvas.drawRect(rect,paint);
+        draw(canvas);
+        canvas.restore();
+    }
 
+
+    /**
+     * 提供给子类自己测量的方法
+     */
+    protected void measure(){
+
+    }
+
+    /**
+     * 提供给子类自己绘制的方法
+     */
+    protected void draw(Canvas canvas){
     }
 
     /**
@@ -133,6 +186,32 @@ public class Content extends ContentParent {
                 parent = parent.getParent();
             }
             return length;
+        }
+    }
+
+    /**
+     * 拿到父控件的宽度
+     *
+     * @return
+     */
+    protected int getParentWidth() {
+        if (isRootContent()) {
+            return getWidth();
+        } else {
+            return getParent().getWidth();
+        }
+    }
+
+    /**
+     * 拿到父控件的高度
+     *
+     * @return
+     */
+    protected int getParentHeight() {
+        if (isRootContent()) {
+            return getHeight();
+        } else {
+            return getParent().getHeight();
         }
     }
 

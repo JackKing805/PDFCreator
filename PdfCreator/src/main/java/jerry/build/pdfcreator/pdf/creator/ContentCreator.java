@@ -7,8 +7,8 @@ import jerry.build.pdfcreator.pdf.content.build.ContentManager;
 public class ContentCreator {
     private ContentManager contentManager;
 
-    public ContentCreator(PageHandle pageHandle){
-        contentManager = new ContentManager(pageHandle);
+    public ContentCreator(){
+        contentManager = new ContentManager();
     }
 
     public void startCreateContent(DefaultTemplate defaultTemplate){

@@ -1,5 +1,7 @@
 package jerry.build.pdfcreator.pdf.content.base;
 
+import android.graphics.Canvas;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,14 +19,14 @@ public class ContentGroup extends Content{
 
 
     @Override
-    public void measureDefault() {
+    protected void measureDefault() {
         super.measureDefault();
 
     }
 
     @Override
-    public void drawDefault() {
-        super.drawDefault();
+    protected void drawDefault(Canvas canvas) {
+        super.drawDefault(canvas);
     }
 
     /**
@@ -33,7 +35,6 @@ public class ContentGroup extends Content{
     public void addContent(Content content){
         content.setParent(this);
         content.measureDefault();
-        System.out.println("_________________________length:"+content.getParentMPTop());
         children.add(content);
     }
 }

@@ -38,10 +38,10 @@ public class PDFCreator {
 
             //创建页面
             PageCreator pageCreator = new PageCreator(pageStyle);
-            PageHandle pageHandle = pageCreator.createPage();
+            pageCreator.createPage();
 
             //添加内容
-            ContentCreator contentCreator = new ContentCreator(pageHandle);
+            ContentCreator contentCreator = new ContentCreator();
             contentCreator.startCreateContent(defaultTemplate);
 
             //保存pdf

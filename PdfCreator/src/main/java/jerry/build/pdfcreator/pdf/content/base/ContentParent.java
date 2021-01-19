@@ -16,16 +16,14 @@ public class ContentParent {
     /**
      * 测量自己真实宽高
      */
-    public void measureDefault() {
-    }
+    protected void measureDefault() { }
 
     /**
      * 画出默认视图
      *
      * @return
      */
-    public void drawDefault() {
-    }
+    protected void drawDefault(Canvas canvas) { }
 
     public ContentStyle getContentStyle() {
         return contentStyle;
@@ -79,7 +77,7 @@ public class ContentParent {
         return contentStyle.getHeightMode();
     }
 
-    public void setMeasureStyle(int width,int height){
+    protected void setMeasureStyle(int width,int height){
         contentStyle.setHeight(height);
         contentStyle.setWidth(width);
     }

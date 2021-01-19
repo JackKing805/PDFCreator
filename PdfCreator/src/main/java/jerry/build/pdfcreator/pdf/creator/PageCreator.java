@@ -11,6 +11,7 @@ import java.io.IOException;
 
 import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.bean.PageStyle;
+import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 import jerry.build.pdfcreator.utils.FileUtils;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -23,11 +24,11 @@ public class PageCreator {
         this.pageStyle = pageStyle;
     }
 
-    public PageHandle createPage(){
+    public void createPage(){
         document = new PdfDocument();
         PdfDocument.PageInfo pageInfo =  new PdfDocument.PageInfo.Builder(pageStyle.getWidth(),pageStyle.getHeight(), pageStyle.getPageSum()).create();
         page = document.startPage(pageInfo);
-        return new PageHandle(pageStyle,page.getCanvas());
+        PageHandleHolder.newInstance().setPageHandle(new PageHandle(pageStyle,page.getCanvas()));
     }
 
     public File savePage(){
