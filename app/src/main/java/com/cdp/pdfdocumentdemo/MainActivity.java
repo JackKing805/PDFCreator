@@ -5,21 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 
-import jerry.build.pdfcreater.PDFCreator;
-import jerry.build.pdfcreater.bean.PageStyle;
-import jerry.build.pdfcreater.listener.CreateListener;
+import jerry.build.pdfcreator.PDFCreator;
+import jerry.build.pdfcreator.bean.PageStyle;
+import jerry.build.pdfcreator.listener.CreateListener;
 
 public class MainActivity extends AppCompatActivity {
     WebView webView;
