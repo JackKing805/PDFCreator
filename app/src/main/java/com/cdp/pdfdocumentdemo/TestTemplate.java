@@ -16,6 +16,9 @@ public class TestTemplate extends DefaultTemplate {
         Row row1 = new Row(new RowStyle(ContentStyle.MATCH_PARENT, 120, 0, 10, Color.RED));
         row.addContent(row1);
         row1.addContent(new Row(new RowStyle(ContentStyle.MATCH_PARENT, 130,0,0,Color.YELLOW)));
+        row1.addContent(new Row(new RowStyle(ContentStyle.MATCH_PARENT, 130,0,0,Color.YELLOW)));
+        row1.addContent(new Row(new RowStyle(ContentStyle.MATCH_PARENT, 130,0,0,Color.YELLOW)));
+        row1.addContent(new Row(new RowStyle(ContentStyle.MATCH_PARENT, 130,0,0,Color.YELLOW)));
     }
 
     @Override
