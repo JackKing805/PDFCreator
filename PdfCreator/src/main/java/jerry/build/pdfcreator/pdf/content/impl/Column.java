@@ -13,4 +13,7 @@ import jerry.build.pdfcreator.pdf.content.bean.ColumnStyle;
 public class Column extends ContentGroup {
 
 
+    public Column(ContentStyle contentStyle) {
+        super(contentStyle);
+    }
 }

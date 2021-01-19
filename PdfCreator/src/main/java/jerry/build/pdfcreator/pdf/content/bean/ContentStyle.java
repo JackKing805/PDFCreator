@@ -53,17 +53,17 @@ public class ContentStyle {
         this.backgroundColor = backgroundColor;
     }
 
-    public ContentStyle(int width, int height) {
-        if(width<0){
-            this.widthMode = width;
+    public ContentStyle(int rWidth, int rHeight) {
+        if(rWidth<0){
+            this.widthMode = rWidth;
         }else{
-            this.width = width;
+            this.width = rWidth;
         }
 
-        if(height<0){
-            this.heightMode = height;
+        if(rHeight<0){
+            this.heightMode = rHeight;
         }else{
-            this.height = height;
+            this.height = rHeight;
         }
 
     }

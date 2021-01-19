@@ -1,8 +1,6 @@
 package jerry.build.pdfcreator.model;
 
-import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.pdf.content.base.ContentGroup;
-import jerry.build.pdfcreator.pdf.content.base.ContentManager;
 
 /**
  * 内容创建模板

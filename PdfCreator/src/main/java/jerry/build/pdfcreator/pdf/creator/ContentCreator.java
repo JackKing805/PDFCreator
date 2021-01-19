@@ -2,7 +2,7 @@ package jerry.build.pdfcreator.pdf.creator;
 
 import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.model.DefaultTemplate;
-import jerry.build.pdfcreator.pdf.content.base.ContentManager;
+import jerry.build.pdfcreator.pdf.content.build.ContentManager;
 
 public class ContentCreator {
     private ContentManager contentManager;
