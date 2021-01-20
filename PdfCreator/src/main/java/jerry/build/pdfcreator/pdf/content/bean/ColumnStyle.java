@@ -13,6 +13,10 @@ public class ColumnStyle extends ContentStyle {
         super(width, height,margin,padding, backgroundColor);
     }
 
+    public ColumnStyle(int width, int height,int margin,int padding) {
+        super(width, height,margin,padding);
+    }
+
     public ColumnStyle(int width, int height) {
         super(width, height);
     }}

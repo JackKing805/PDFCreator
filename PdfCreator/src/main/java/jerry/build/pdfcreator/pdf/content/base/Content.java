@@ -5,11 +5,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 
 public class Content extends ContentParent {
-    private static final String TAG = "ContentParent";
+    private static final String TAG = "Content";
     //当前content的父亲
     private Content parent;
 
@@ -19,7 +20,8 @@ public class Content extends ContentParent {
 
 
     @Override
-    protected void measureDefault() {
+    public void measureDefault() {
+//        Log.e(TAG, "measureDefault: "+toString() );
         int widthMode = getWidthMode();
         int heightMode = getHeightMode();
 
@@ -27,16 +29,12 @@ public class Content extends ContentParent {
         int measureHeight = 0;
 
         if (widthMode == ContentStyle.MATCH_PARENT) {
-            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight();
+            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
         } else if (widthMode == ContentStyle.WRAP_CONTENT) {
 
         } else if (widthMode == ContentStyle.SELF) {
-            if(getWidth()+getMarginLeft()+getMarginRight()>getParentWidth()){
-                measureWidth = getParentWidth()-getMarginLeft()-getMarginRight();
-            }else if(getWidth()+getMarginLeft()+getMarginRight()<getParentWidth()){
-                measureWidth = getWidth();
-            }else if(getWidth()+getMarginLeft()>getParentWidth()){
-                measureWidth = getParentWidth() - getMarginLeft();
+            if(getWidth()+getMarginLeft()+getParent().getPaddingLeft()>getParentWidth()-getMarginRight()-getParent().getPaddingRight()){
+                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
             }else{
                 measureWidth = getWidth();
             }
@@ -44,43 +42,40 @@ public class Content extends ContentParent {
 
 
         if (heightMode == ContentStyle.MATCH_PARENT) {
-            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom();
+            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop()-getParent().getPaddingBottom();
         } else if (heightMode == ContentStyle.WRAP_CONTENT) {
 
 
         } else if (heightMode == ContentStyle.SELF) {
-            if(getHeight()+getMarginTop()+getMarginBottom()>getParentHeight()){
-                measureHeight = getParentHeight()-getMarginTop()-getMarginBottom();
-            }else if(getHeight()+getMarginTop()+getMarginBottom()<getParentHeight()){
-                measureHeight = getHeight();
-            }else if(getWidth()+getMarginTop()>getParentHeight()){
-                measureHeight = getParentHeight() - getMarginTop();
+            if(getHeight()+getMarginTop()+getParent().getPaddingTop()>getParentHeight()-getMarginBottom()-getParent().getPaddingTop()){
+                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom()- getParent().getPaddingTop()-getParent().getPaddingBottom();
             }else{
                 measureHeight = getHeight();
             }
         }
-        measure();
         setMeasureStyle(measureWidth, measureHeight);
+        measure();
         drawDefault(PageHandleHolder.newInstance().getCanvas());
     }
 
     @Override
-    protected void drawDefault(Canvas canvas) {
+    public void drawDefault(Canvas canvas) {
         Paint paint = new Paint();
         paint.setDither(true);
         paint.setAntiAlias(true);
         paint.setColor(getContentStyle().getBackgroundColor());
         int left = getParentMPLeft()+getMarginLeft();
         int top = getParentMPTop()+getMarginTop();
-        int right = left+getWidth();
-        int bottom = top+getHeight();
-        System.out.println("__________________");
-        System.out.println("________left:"+left);
-        System.out.println("________top:"+top);
-        System.out.println("________right:"+right);
-        System.out.println("________bottom:"+bottom);
-        Rect rect = new Rect(left,top,right,bottom);
+        System.out.println("MarginTop______________  ptop:"+getParentMPTop());
+        System.out.println("MarginTop______________  top:"+top+",getContentStyle"+getContentStyle().hashCode());
+
         canvas.save();
+        canvas.translate(left,top);
+
+        int right = getWidth();
+        int bottom = getHeight();
+
+        Rect rect = new Rect(0,0,right,bottom);
         canvas.clipRect(rect);
         canvas.drawRect(rect,paint);
         draw(canvas);
@@ -115,7 +110,7 @@ public class Content extends ContentParent {
      */
     protected Content getParent() {
         if (isRootContent()) {
-            throw new IllegalStateException("can't get parent at root content");
+            return this;
         } else {
             return parent;
         }
@@ -219,10 +214,6 @@ public class Content extends ContentParent {
      * 为当前节点设置父节点
      */
     protected void setParent(Content parent) {
-        if (this.parent == null) {
-            this.parent = parent;
-        } else {
-            throw new IllegalArgumentException("already set parent");
-        }
+        this.parent = parent;
     }
 }

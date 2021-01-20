@@ -1,84 +1,102 @@
 package jerry.build.pdfcreator.pdf.content.base;
 
 import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.Log;
 
 import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 
 public class ContentParent {
+    private static final String TAG = "ContentParent";
     //每个content的基本属性
     private final ContentStyle contentStyle;
 
     public ContentParent(ContentStyle contentStyle) {
-        this.contentStyle = contentStyle;
+        this.contentStyle = (ContentStyle) contentStyle.clone();
     }
 
     /**
      * 测量自己真实宽高
      */
-    protected void measureDefault() { }
+    public void measureDefault() { }
 
     /**
      * 画出默认视图
      *
      * @return
      */
-    protected void drawDefault(Canvas canvas) { }
+    public void drawDefault(Canvas canvas) { }
 
     public ContentStyle getContentStyle() {
         return contentStyle;
     }
 
     public int getHeight() {
-        return contentStyle.getHeight();
+        return getContentStyle().getHeight();
     }
 
     public int getWidth() {
-        return contentStyle.getWidth();
+        return getContentStyle().getWidth();
     }
 
     public int getMarginTop() {
-        return contentStyle.getMarginTop();
+        return getContentStyle().getMarginTop();
     }
 
     public int getMarginLeft() {
-        return contentStyle.getMarginLeft();
+        return getContentStyle().getMarginLeft();
     }
 
     public int getMarginRight() {
-        return contentStyle.getMarginRight();
+        return getContentStyle().getMarginRight();
     }
 
     public int getMarginBottom() {
-        return contentStyle.getMarginBottom();
+        return getContentStyle().getMarginBottom();
     }
 
     public int getPaddingTop() {
-        return contentStyle.getPaddingTop();
+        return getContentStyle().getPaddingTop();
     }
 
     public int getPaddingLeft() {
-        return contentStyle.getPaddingLeft();
+        return getContentStyle().getPaddingLeft();
     }
 
     public int getPaddingRight() {
-        return contentStyle.getPaddingRight();
+        return getContentStyle().getPaddingRight();
     }
 
     public int getPaddingBottom() {
-        return contentStyle.getPaddingBottom();
+        return getContentStyle().getPaddingBottom();
     }
 
     public int getWidthMode(){
-        return contentStyle.getWidthMode();
+        return getContentStyle().getWidthMode();
     }
 
     public int getHeightMode(){
-        return contentStyle.getHeightMode();
+        return getContentStyle().getHeightMode();
     }
 
     protected void setMeasureStyle(int width,int height){
-        contentStyle.setHeight(height);
-        contentStyle.setWidth(width);
+        getContentStyle().setHeight(height);
+        getContentStyle().setWidth(width);
+    }
+
+    /**
+     * 设置mariginTop
+     */
+    public void setMarginTop(int marginTop) {
+        Log.e(TAG, "setMarginTop: "+marginTop +",getContentStyle"+getContentStyle().hashCode());
+        getContentStyle().setMarginTop(marginTop);
+    }
+
+    public Paint createPaint(){
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setDither(true);
+        return paint;
     }
 }

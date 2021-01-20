@@ -15,5 +15,6 @@ public class ContentCreator {
         defaultTemplate.createHeader(contentManager.getRootContent());
         defaultTemplate.createBody(contentManager.getRootContent());
         defaultTemplate.createFooter(contentManager.getRootContent());
+        contentManager.completeContent();
     }
 }

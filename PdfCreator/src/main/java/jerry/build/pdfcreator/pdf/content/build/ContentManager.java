@@ -2,7 +2,11 @@ package jerry.build.pdfcreator.pdf.content.build;
 
 import android.graphics.Color;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jerry.build.pdfcreator.bean.PageHandle;
+import jerry.build.pdfcreator.pdf.content.base.Content;
 import jerry.build.pdfcreator.pdf.content.base.ContentGroup;
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 import jerry.build.pdfcreator.pdf.content.impl.Row;
@@ -19,7 +23,24 @@ public class ContentManager {
         rootContent = new ContentGroup(contentStyle);
     }
 
+    public void completeContent() {
+        if (rootContent.haveChild()) {
+            List<Content> children = new ArrayList<>();
+            children.add(rootContent);
+            measureChildren(children);
+        }
+    }
+
+    private void measureChildren(List<Content> children) {
+        for (Content child : children) {
+            ContentGroup content = (ContentGroup) child;
+            child.measureDefault();
+            measureChildren(content.getChildren());
+        }
+    }
+
+
     public ContentGroup getRootContent() {
-        return  rootContent;
+        return rootContent;
     }
 }

@@ -4,13 +4,14 @@ import android.graphics.Color;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public class ContentStyle {
+public class ContentStyle implements Cloneable{
     public static final int MATCH_PARENT = -1;
     public static final int WRAP_CONTENT = -2;
     public static final int SELF = -3;
@@ -58,18 +59,24 @@ public class ContentStyle {
             this.widthMode = rWidth;
         }else{
             this.width = rWidth;
+            this.widthMode = SELF;
         }
 
         if(rHeight<0){
             this.heightMode = rHeight;
         }else{
             this.height = rHeight;
+            this.heightMode = SELF;
         }
 
     }
 
     public ContentStyle(int width, int height, @ColorInt int backgroundColor) {
         this(width, height,0,0,0,0,0,0,0,0,backgroundColor);
+    }
+
+    public ContentStyle(int width, int height, int margin, int padding) {
+        this(width, height,margin,margin,margin,margin,padding,padding,padding,padding,Color.WHITE);
     }
 
     public ContentStyle(int width, int height, int margin, int padding, @ColorInt int backgroundColor) {
@@ -195,5 +202,16 @@ public class ContentStyle {
 
     public int getHeightMode() {
         return heightMode;
+    }
+
+    @Override
+    public Object clone() {
+        ContentStyle contentStyle = null;
+        try{
+            contentStyle = (ContentStyle)super.clone();
+        }catch(CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return contentStyle;
     }
 }
