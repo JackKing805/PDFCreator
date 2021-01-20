@@ -23,16 +23,51 @@ public class Row extends ContentGroup {
 
     @Override
     public void layout() {
+        RowStyle rowStyle = (RowStyle) getContentStyle();
         List<Content> children = getChildren();
-        int marginTop = 0;
-        for (int i = 0; i < children.size(); i++) {
-            if(i==0){
-                marginTop = marginTop + children.get(i).getMarginTop();
-            }else{
-                marginTop = marginTop + children.get(i).getMarginTop() + children.get(i).getMarginBottom() + children.get(i-1).getHeight();
+        if(rowStyle.getOrientation()==RowStyle.horizontal){
+            int marginLeft = 0;
+            for (int i = 0; i < children.size(); i++) {
+                if(i==0){
+                    marginLeft = marginLeft + children.get(i).getMarginLeft();
+                }else{
+                    marginLeft = marginLeft + children.get(i).getMarginLeft() + children.get(i-1).getMarginRight() + children.get(i-1).getWidth();
+                }
+                children.get(i).setMarginLeft(marginLeft);
             }
-            children.get(i).setMarginTop(marginTop);
+        }else{
+            int marginTop = 0;
+            for (int i = 0; i < children.size(); i++) {
+                if(i==0){
+                    marginTop = marginTop + children.get(i).getMarginTop();
+                }else{
+                    marginTop = marginTop + children.get(i).getMarginTop() + children.get(i-1).getMarginBottom() + children.get(i-1).getHeight();
+                }
+                children.get(i).setMarginTop(marginTop);
+            }
         }
+    }
+
+    @Override
+    protected void measure(int widthMode, int heightMode, int height, int width) {
+        super.measure(widthMode, heightMode, height, width);
+        RowStyle rowStyle = (RowStyle) getContentStyle();
+        if(rowStyle.isHaveHorizontalBorder()){
+            getContentStyle().setPaddingLeft(rowStyle.getBorderWidth());
+            getContentStyle().setPaddingRight(rowStyle.getBorderWidth());
+        }
+
+        if(rowStyle.isHaveVerticalBorder()){
+            getContentStyle().setPaddingTop(rowStyle.getBorderWidth());
+            getContentStyle().setPaddingBottom(rowStyle.getBorderWidth());
+        }
+    }
+
+
+    @Override
+    protected int[] measureChildren() {
+
+        return super.measureChildren();
     }
 
     @Override

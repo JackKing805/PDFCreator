@@ -54,7 +54,7 @@ public class Paragraph extends Content {
         int y = 0;
         switch(paragraphStyle.getFont().getFontAlign()){
             case ParagraphStyle.ParagraphFont.TopLeft:
-                x = 0;
+                x = getMarginLeft();
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.TopCenter:
@@ -62,11 +62,11 @@ public class Paragraph extends Content {
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.TopRight:
-                x = parentWidth-w/2;
+                x = parentWidth-w/2-getMarginRight();
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.CenterLeft:
-                x = 0;
+                x = getMarginLeft();
                 y = parentHeight/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.Center:
@@ -74,11 +74,11 @@ public class Paragraph extends Content {
                 y = parentHeight/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.CenterRight:
-                x = parentWidth-w/2;
+                x = parentWidth-w/2-getMarginRight();
                 y = parentHeight/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.BottomLeft:
-                x = 0;
+                x = getMarginLeft();
                 y = parentHeight - (h-textBaseLine);
                 break;
             case ParagraphStyle.ParagraphFont.BottomCenter:
@@ -86,7 +86,7 @@ public class Paragraph extends Content {
                 y = parentHeight - (h-textBaseLine);
                 break;
             case ParagraphStyle.ParagraphFont.BottomRight:
-                x = parentWidth-w/2;
+                x = parentWidth-w/2-getMarginRight();
                 y = parentHeight - (h-textBaseLine);
                 break;
         }

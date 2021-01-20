@@ -97,6 +97,11 @@ public class ContentParent {
         getContentStyle().setMarginTop(marginTop);
     }
 
+    public void setMarginLeft(int marginLeft) {
+        Log.e(TAG, "setMarginTop: "+marginLeft +",getContentStyle"+getContentStyle().hashCode());
+        getContentStyle().setMarginLeft(marginLeft);
+    }
+
     public Paint createPaint(){
         Paint paint = new Paint();
         paint.setAntiAlias(true);

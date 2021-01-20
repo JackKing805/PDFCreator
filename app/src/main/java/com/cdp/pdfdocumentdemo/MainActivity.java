@@ -1,14 +1,13 @@
 package com.cdp.pdfdocumentdemo;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Build;
 import android.os.Bundle;
-import android.view.ViewGroup;
+import android.view.Gravity;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,6 +20,7 @@ import jerry.build.pdfcreator.listener.CreateListener;
 public class MainActivity extends AppCompatActivity {
     WebView webView;
     FloatingActionButton button;
+    BaseDialog baseDialog;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
         button = findViewById(R.id.button);
         initWebView();
+        baseDialog = new BaseDialog.Builder(this,R.layout.loading_layout)
+                .setCancelAble(false)
+                .setCanTouchOutSide(false)
+                .setGravity(Gravity.CENTER)
+                .build();
+
 
         button.setOnClickListener(v -> webView.post(() -> PDFCreator.create(new PageStyle(
                         webView.getWidth(),
@@ -42,17 +48,18 @@ public class MainActivity extends AppCompatActivity {
                 new CreateListener() {
                     @Override
                     public void createStart() {
-                        Toast.makeText(MainActivity.this,"开始生成",Toast.LENGTH_SHORT).show();
+                        baseDialog.show();
                     }
 
                     @Override
                     public void createSuccess(File file) {
                         loadPdfUrl(file.getAbsolutePath());
+                        baseDialog.dismiss();
                     }
 
                     @Override
                     public void createError(Exception e) {
-                        Toast.makeText(MainActivity.this,"生成失败",Toast.LENGTH_SHORT).show();
+                        baseDialog.dismiss();
                     }
                 })));
     }

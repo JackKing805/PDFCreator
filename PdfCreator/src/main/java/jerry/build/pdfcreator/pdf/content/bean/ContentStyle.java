@@ -11,15 +11,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public class ContentStyle implements Cloneable{
+import jerry.build.pdfcreator.pdf.content.base.ContentGroup;
+
+public class ContentStyle implements Cloneable {
     public static final int MATCH_PARENT = -1;
     public static final int WRAP_CONTENT = -2;
     public static final int SELF = -3;
 
-    @IntDef({MATCH_PARENT,WRAP_CONTENT,SELF})
+    @IntDef({MATCH_PARENT, WRAP_CONTENT, SELF})
     @Retention(RetentionPolicy.SOURCE)
     @Target(ElementType.PARAMETER)
-    @interface KV{}
+    @interface KV {
+    }
 
     private int widthMode = SELF;
     private int heightMode = SELF;
@@ -39,7 +42,8 @@ public class ContentStyle implements Cloneable{
     private int paddingBottom = 0;
 
     @ColorInt
-    private int backgroundColor = Color.WHITE;
+    private int backgroundColor = Color.TRANSPARENT;
+
 
     public ContentStyle(int width, int height, int marginTop, int marginLeft, int marginRight, int marginBottom, int paddingTop, int paddingLeft, int paddingRight, int paddingBottom, @ColorInt int backgroundColor) {
         this(width, height);
@@ -55,16 +59,16 @@ public class ContentStyle implements Cloneable{
     }
 
     public ContentStyle(int rWidth, int rHeight) {
-        if(rWidth<0){
+        if (rWidth < 0) {
             this.widthMode = rWidth;
-        }else{
+        } else {
             this.width = rWidth;
             this.widthMode = SELF;
         }
 
-        if(rHeight<0){
+        if (rHeight < 0) {
             this.heightMode = rHeight;
-        }else{
+        } else {
             this.height = rHeight;
             this.heightMode = SELF;
         }
@@ -72,28 +76,28 @@ public class ContentStyle implements Cloneable{
     }
 
     public ContentStyle(int width, int height, @ColorInt int backgroundColor) {
-        this(width, height,0,0,0,0,0,0,0,0,backgroundColor);
+        this(width, height, 0, 0, 0, 0, 0, 0, 0, 0, backgroundColor);
     }
 
     public ContentStyle(int width, int height, int margin, int padding) {
-        this(width, height,margin,margin,margin,margin,padding,padding,padding,padding,Color.WHITE);
+        this(width, height, margin, margin, margin, margin, padding, padding, padding, padding, Color.WHITE);
     }
 
     public ContentStyle(int width, int height, int margin, int padding, @ColorInt int backgroundColor) {
-        this(width, height,margin,margin,margin,margin,padding,padding,padding,padding,backgroundColor);
+        this(width, height, margin, margin, margin, margin, padding, padding, padding, padding, backgroundColor);
     }
 
     public ContentStyle() {
     }
 
-    public void setMargin(int margin){
+    public void setMargin(int margin) {
         this.marginTop = margin;
         this.marginLeft = margin;
         this.marginRight = margin;
         this.marginBottom = margin;
     }
 
-    public void setPadding(int padding){
+    public void setPadding(int padding) {
         this.paddingTop = padding;
         this.paddingLeft = padding;
         this.paddingRight = padding;
@@ -207,11 +211,86 @@ public class ContentStyle implements Cloneable{
     @Override
     public Object clone() {
         ContentStyle contentStyle = null;
-        try{
-            contentStyle = (ContentStyle)super.clone();
-        }catch(CloneNotSupportedException e) {
+        try {
+            contentStyle = (ContentStyle) super.clone();
+        } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
         return contentStyle;
+    }
+
+
+    public static class Builder {
+        ContentStyle contentStyle = new ContentStyle();
+
+
+        public Builder setWidthMode(int widthMode) {
+            contentStyle.setWidthMode(widthMode);
+            return this;
+        }
+
+        public Builder setHeightMode(int heightMode) {
+            contentStyle.setHeightMode(heightMode);
+            return this;
+        }
+
+        public Builder setWidth(int width) {
+            contentStyle.setWidth(width);
+            return this;
+        }
+
+        public Builder setHeight(int height) {
+            contentStyle.setHeight(height);
+            return this;
+        }
+
+        public Builder setMarginTop(int marginTop) {
+            contentStyle.setMarginTop(marginTop);
+            return this;
+        }
+
+        public Builder setMarginLeft(int marginLeft) {
+            contentStyle.setMarginLeft(marginLeft);
+            return this;
+        }
+
+        public Builder setMarginRight(int marginRight) {
+            contentStyle.setMarginRight(marginRight);
+            return this;
+        }
+
+        public Builder setMarginBottom(int marginBottom) {
+            contentStyle.setMarginBottom(marginBottom);
+            return this;
+        }
+
+        public Builder setPaddingTop(int paddingTop) {
+            contentStyle.setPaddingTop(paddingTop);
+            return this;
+        }
+
+        public Builder setPaddingLeft(int paddingLeft) {
+            contentStyle.setPaddingLeft(paddingLeft);
+            return this;
+        }
+
+        public Builder setPaddingRight(int paddingRight) {
+            contentStyle.setPaddingRight(paddingRight);
+            return this;
+        }
+
+        public Builder setPaddingBottom(int paddingBottom) {
+            contentStyle.setPaddingBottom(paddingBottom);
+            return this;
+        }
+
+        public Builder setBackgroundColor(int backgroundColor) {
+            contentStyle.setBackgroundColor(backgroundColor);
+            return this;
+        }
+
+        public ContentStyle create() {
+            return contentStyle;
+        }
     }
 }

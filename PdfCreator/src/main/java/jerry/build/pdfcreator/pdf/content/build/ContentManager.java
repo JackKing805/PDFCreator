@@ -1,5 +1,6 @@
 package jerry.build.pdfcreator.pdf.content.build;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 
 import java.util.ArrayList;
@@ -15,12 +16,26 @@ import jerry.build.pdfcreator.pdf.content.bean.RowStyle;
 public class ContentManager {
     //最底层的视图
     private final ContentGroup rootContent;
+    private final Row row;
 
     public ContentManager() {
-        ContentStyle contentStyle = new ContentStyle(PageHandleHolder.newInstance().getPageStyle().getWidth(), PageHandleHolder.newInstance().getPageStyle().getHeight());
-        contentStyle.setHeightMode(ContentStyle.MATCH_PARENT);
-        contentStyle.setWidthMode(ContentStyle.MATCH_PARENT);
+        ContentStyle contentStyle = new ContentStyle.Builder()
+                .setWidth(PageHandleHolder.newInstance().getPageStyle().getWidth())
+                .setHeight(PageHandleHolder.newInstance().getPageStyle().getHeight())
+                .setHeightMode(ContentStyle.MATCH_PARENT)
+                .setWidthMode(ContentStyle.MATCH_PARENT)
+                .setBackgroundColor(Color.RED)
+                .create();
         rootContent = new ContentGroup(contentStyle);
+
+        RowStyle rowStyle = new RowStyle.Builder()
+                .setHeightMode(ContentStyle.MATCH_PARENT)
+                .setWidthMode(ContentStyle.MATCH_PARENT)
+                .setBackgroundColor(Color.parseColor("#f3ece3"))
+                .setOrientation(RowStyle.vertical)
+                .create();
+        row = new Row(rowStyle);
+        rootContent.addContent(row);
     }
 
     public void completeContent() {
@@ -46,6 +61,6 @@ public class ContentManager {
 
 
     public ContentGroup getRootContent() {
-        return rootContent;
+        return row;
     }
 }

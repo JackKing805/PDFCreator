@@ -31,7 +31,7 @@ public class Content extends ContentParent {
         if (widthMode == ContentStyle.MATCH_PARENT) {
             measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
         } else if (widthMode == ContentStyle.WRAP_CONTENT) {
-
+            measureWidth = getWidth();
         } else if (widthMode == ContentStyle.SELF) {
             if(getWidth()+getMarginLeft()+getParent().getPaddingLeft()>getParentWidth()-getMarginRight()-getParent().getPaddingRight()){
                 measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
@@ -44,8 +44,7 @@ public class Content extends ContentParent {
         if (heightMode == ContentStyle.MATCH_PARENT) {
             measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop()-getParent().getPaddingBottom();
         } else if (heightMode == ContentStyle.WRAP_CONTENT) {
-
-
+            measureHeight = getHeight();
         } else if (heightMode == ContentStyle.SELF) {
             if(getHeight()+getMarginTop()+getParent().getPaddingTop()>getParentHeight()-getMarginBottom()-getParent().getPaddingTop()){
                 measureHeight = getParentHeight() - getMarginTop() - getMarginBottom()- getParent().getPaddingTop()-getParent().getPaddingBottom();

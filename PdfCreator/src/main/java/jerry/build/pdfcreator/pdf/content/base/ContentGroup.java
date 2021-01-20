@@ -24,17 +24,53 @@ public class ContentGroup extends Content{
     public void measureDefault() {
         Log.e(TAG, "measureDefault: "+toString() );
         layout();
-        super.measureDefault();
+        int widthMode = getWidthMode();
+        int heightMode = getHeightMode();
+
+        int measureWidth = 0;
+        int measureHeight = 0;
+
+        if (widthMode == ContentStyle.MATCH_PARENT) {
+            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
+        } else if (widthMode == ContentStyle.WRAP_CONTENT) {
+            measureWidth = measureChildren()[0];
+        } else if (widthMode == ContentStyle.SELF) {
+            if(getWidth()+getMarginLeft()+getParent().getPaddingLeft()>getParentWidth()-getMarginRight()-getParent().getPaddingRight()){
+                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
+            }else{
+                measureWidth = getWidth();
+            }
+        }
+
+        if (heightMode == ContentStyle.MATCH_PARENT) {
+            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop()-getParent().getPaddingBottom();
+        } else if (heightMode == ContentStyle.WRAP_CONTENT) {
+            measureHeight = measureChildren()[1];
+        } else if (heightMode == ContentStyle.SELF) {
+            if(getHeight()+getMarginTop()+getParent().getPaddingTop()>getParentHeight()-getMarginBottom()-getParent().getPaddingTop()){
+                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom()- getParent().getPaddingTop()-getParent().getPaddingBottom();
+            }else{
+                measureHeight = getHeight();
+            }
+        }
+        setMeasureStyle(measureWidth, measureHeight);
+        measure(widthMode,heightMode,getWidth(),getHeight());
+        drawDefault(PageHandleHolder.newInstance().getCanvas());
     }
 
     public void layout(){}
 
+    protected int[] measureChildren(){
+        return new int[]{0,0};
+    }
+
     /**
      * 添加子Content
      */
-    public void addContent(Content content){
+    public Content addContent(Content content){
         content.setParent(this);
         children.add(content);
+        return content;
     }
 
     /**
