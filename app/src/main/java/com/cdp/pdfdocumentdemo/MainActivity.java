@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
          * 而一般情况下，为了安全起见，是需要将其设置为false的。
          */
         webSettings.setAllowUniversalAccessFromFileURLs(true);
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
+        webSettings.setSupportZoom(false);
+        webSettings.setBuiltInZoomControls(false);
         webSettings.setDisplayZoomControls(false);//不显示那个丑东西
     }
 

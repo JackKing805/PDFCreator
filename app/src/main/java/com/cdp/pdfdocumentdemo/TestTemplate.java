@@ -14,7 +14,7 @@ public class TestTemplate extends DefaultTemplate {
 
 
     @Override
-    public void createHeader(ContentGroup content) {
+    public void createHeader(Row content) {
         Row line1 = new Row(
                 new RowStyle.Builder()
                         .setWidthMode(ContentStyle.MATCH_PARENT)
@@ -44,9 +44,7 @@ public class TestTemplate extends DefaultTemplate {
                 .create()));
         content.addContent(line2);
 
-
-        Row line3 = new Row(
-                new RowStyle.Builder()
+        Row line3 = new Row(new RowStyle.Builder()
                         .setWidthMode(ContentStyle.MATCH_PARENT)
                         .setHeight(30)
                         .setMarginTop(5)
@@ -59,18 +57,19 @@ public class TestTemplate extends DefaultTemplate {
                 .setMarginRight(20)
                 .create()));
         content.addContent(line3);
+        content.addContent(line3);
+        content.addContent(line3);
+        content.addContent(line3);
+        content.addContent(line3);
+    }
 
-
+    @Override
+    public void createBody(Row content) {
 
     }
 
     @Override
-    public void createBody(ContentGroup content) {
-
-    }
-
-    @Override
-    public void createFooter(ContentGroup content) {
+    public void createFooter(Row content) {
 
     }
 }
