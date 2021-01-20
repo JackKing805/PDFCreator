@@ -1,5 +1,6 @@
 package jerry.build.pdfcreator;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,11 +25,11 @@ public class PDFCreator {
     /**
      * 整个创建的起点
      */
-    public static void create(PageStyle pageStyle, DefaultTemplate defaultTemplate){
-        create(pageStyle,defaultTemplate,null);
+    public static void create(PageStyle pageStyle, DefaultTemplate defaultTemplate, Context context){
+        create(pageStyle,defaultTemplate,context,null);
     }
 
-    public static void create(PageStyle pageStyle, DefaultTemplate defaultTemplate, CreateListener createListener){
+    public static void create(PageStyle pageStyle, DefaultTemplate defaultTemplate, Context context, CreateListener createListener){
         new Thread(() -> {
             boolean hasListener = createListener!=null;
             //开始创建
@@ -38,7 +39,7 @@ public class PDFCreator {
 
             //创建页面
             PageCreator pageCreator = new PageCreator(pageStyle);
-            pageCreator.createPage();
+            pageCreator.createPage(context);
 
             //添加内容
             ContentCreator contentCreator = new ContentCreator();

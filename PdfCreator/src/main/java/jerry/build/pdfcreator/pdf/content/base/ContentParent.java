@@ -85,6 +85,10 @@ public class ContentParent {
         getContentStyle().setWidth(width);
     }
 
+    protected void setMeasureStyle(float width,float height){
+        setMeasureStyle(Double.valueOf(Math.ceil(width)).intValue(),Double.valueOf(Math.ceil(height)).intValue());
+    }
+
     /**
      * 设置mariginTop
      */

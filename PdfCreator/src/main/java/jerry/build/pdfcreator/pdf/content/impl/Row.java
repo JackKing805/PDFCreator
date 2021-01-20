@@ -29,7 +29,7 @@ public class Row extends ContentGroup {
             if(i==0){
                 marginTop = marginTop + children.get(i).getMarginTop();
             }else{
-                marginTop = marginTop + children.get(i).getMarginTop() + children.get(i).getMarginBottom() + children.get(i).getHeight();
+                marginTop = marginTop + children.get(i).getMarginTop() + children.get(i).getMarginBottom() + children.get(i-1).getHeight();
             }
             children.get(i).setMarginTop(marginTop);
         }

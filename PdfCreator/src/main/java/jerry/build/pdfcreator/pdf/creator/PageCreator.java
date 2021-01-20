@@ -1,5 +1,6 @@
 package jerry.build.pdfcreator.pdf.creator;
 
+import android.content.Context;
 import android.graphics.pdf.PdfDocument;
 import android.os.Build;
 
@@ -24,11 +25,11 @@ public class PageCreator {
         this.pageStyle = pageStyle;
     }
 
-    public void createPage(){
+    public void createPage(Context context){
         document = new PdfDocument();
         PdfDocument.PageInfo pageInfo =  new PdfDocument.PageInfo.Builder(pageStyle.getWidth(),pageStyle.getHeight(), pageStyle.getPageSum()).create();
         page = document.startPage(pageInfo);
-        PageHandleHolder.newInstance().setPageHandle(new PageHandle(pageStyle,page.getCanvas()));
+        PageHandleHolder.newInstance().setPageHandle(new PageHandle(pageStyle,page.getCanvas(),context));
     }
 
     public File savePage(){

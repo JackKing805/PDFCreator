@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                         1,
                         getApplicationContext().getFilesDir().getAbsolutePath() + "/pdf/demo.pdf"),
                 new TestTemplate(),
+                this,
                 new CreateListener() {
                     @Override
                     public void createStart() {

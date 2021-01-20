@@ -1,5 +1,7 @@
 package jerry.build.pdfcreator.model;
 
+import android.content.Context;
+
 import jerry.build.pdfcreator.pdf.content.base.ContentGroup;
 
 /**

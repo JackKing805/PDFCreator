@@ -1,5 +1,6 @@
 package jerry.build.pdfcreator.pdf.content.build;
 
+import android.content.Context;
 import android.graphics.Canvas;
 
 import jerry.build.pdfcreator.bean.PageHandle;
@@ -41,5 +42,12 @@ public class PageHandleHolder {
             throw new NullPointerException("PageHandle can't be null");
         }
         return pageHandle.getPageStyle();
+    }
+
+    public Context getContext(){
+        if(pageHandle==null){
+            throw new NullPointerException("PageHandle can't be null");
+        }
+        return pageHandle.getContext();
     }
 }

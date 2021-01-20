@@ -54,7 +54,7 @@ public class Content extends ContentParent {
             }
         }
         setMeasureStyle(measureWidth, measureHeight);
-        measure();
+        measure(widthMode,heightMode,getWidth(),getHeight());
         drawDefault(PageHandleHolder.newInstance().getCanvas());
     }
 
@@ -66,8 +66,6 @@ public class Content extends ContentParent {
         paint.setColor(getContentStyle().getBackgroundColor());
         int left = getParentMPLeft()+getMarginLeft();
         int top = getParentMPTop()+getMarginTop();
-        System.out.println("MarginTop______________  ptop:"+getParentMPTop());
-        System.out.println("MarginTop______________  top:"+top+",getContentStyle"+getContentStyle().hashCode());
 
         canvas.save();
         canvas.translate(left,top);
@@ -86,7 +84,7 @@ public class Content extends ContentParent {
     /**
      * 提供给子类自己测量的方法
      */
-    protected void measure(){
+    protected void measure(int widthMode, int heightMode,int height,int width){
 
     }
 

@@ -33,9 +33,14 @@ public class ContentManager {
 
     private void measureChildren(List<Content> children) {
         for (Content child : children) {
-            ContentGroup content = (ContentGroup) child;
-            child.measureDefault();
-            measureChildren(content.getChildren());
+            try{
+                ContentGroup content = (ContentGroup) child;
+                child.measureDefault();
+                measureChildren(content.getChildren());
+            }catch (ClassCastException e){
+                child.measureDefault();
+                e.printStackTrace();
+            }
         }
     }
 
