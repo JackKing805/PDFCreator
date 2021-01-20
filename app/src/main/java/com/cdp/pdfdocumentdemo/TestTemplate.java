@@ -57,10 +57,31 @@ public class TestTemplate extends DefaultTemplate {
                 .setMarginRight(20)
                 .create()));
         content.addContent(line3);
-        content.addContent(line3);
-        content.addContent(line3);
-        content.addContent(line3);
-        content.addContent(line3);
+
+
+        Row line4 = new Row(new RowStyle.Builder()
+                .setWidthMode(ContentStyle.MATCH_PARENT)
+                .setHeight(2)
+                .setMarginLeft(10)
+                .setMarginRight(10)
+                .setMarginTop(20)
+                .setBackgroundColor(Color.BLACK)
+                .setOrientation(RowStyle.vertical)
+                .create()
+        );
+        content.addContent(line4);
+
+        Row line5 = new Row(new RowStyle.Builder()
+                .setWidthMode(ContentStyle.MATCH_PARENT)
+                .setHeight(2)
+                .setMarginLeft(10)
+                .setMarginRight(10)
+                .setMarginTop(5)
+                .setBackgroundColor(Color.BLACK)
+                .setOrientation(RowStyle.vertical)
+                .create()
+        );
+        content.addContent(line5);
     }
 
     @Override
