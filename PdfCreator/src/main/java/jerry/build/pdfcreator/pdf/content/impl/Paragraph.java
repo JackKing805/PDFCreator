@@ -8,7 +8,6 @@ import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 import jerry.build.pdfcreator.pdf.content.bean.ParagraphStyle;
 
 public class Paragraph extends Content {
-
     private Paint paint;
     private Paint.FontMetrics metrics;
     private ParagraphStyle paragraphStyle;
@@ -34,34 +33,30 @@ public class Paragraph extends Content {
 
         textWidth = Double.valueOf(Math.ceil(paint.measureText(paragraphStyle.getText()))).intValue();
         textHeight = Double.valueOf(Math.ceil((Math.abs(metrics.top)+Math.abs(metrics.bottom)+Math.abs(metrics.leading)))).intValue();
-        int measureWidth = 0;
-        int measureHeight = 0;
+        int measureWidth;
+        int measureHeight;
 
-        if(widthMode==ContentStyle.WRAP_CONTENT && width == 0){
-            width = Double.valueOf(Math.ceil(getParentWidth() * paragraphStyle.getWeight())).intValue();
-            setMeasureStyle(width,height);
-        }
-        else if(widthMode==ContentStyle.WRAP_CONTENT){
+        if(widthMode==ContentStyle.WRAP_CONTENT){
             measureWidth = textWidth;
         }else if(widthMode==ContentStyle.MATCH_PARENT){
             measureWidth = getParentWidth();
-        }else{
+        }else if(widthMode==ContentStyle.SELF){
             measureWidth = getWidth();
+        }else{
+            measureWidth = calculatingWeight(getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight(), getCompanion(), 1);
         }
 
-        if(heightMode==ContentStyle.WRAP_CONTENT && height == 0){
-            height = Double.valueOf(Math.ceil(getParentHeight() * paragraphStyle.getWeight())).intValue();
-            setMeasureStyle(width,height);
-        } else if(heightMode==ContentStyle.WRAP_CONTENT){
+
+
+        if(heightMode==ContentStyle.WRAP_CONTENT){
             measureHeight = textHeight;
         }else if(heightMode==ContentStyle.MATCH_PARENT){
             measureHeight = getParentHeight();
-        }else{
+        }else if(widthMode==ContentStyle.SELF){
             measureHeight = getHeight();
+        }else{
+            measureHeight = calculatingWeight(getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom(), getCompanion(), 2);
         }
-
-
-
         setMeasureStyle(measureWidth,measureHeight);
     }
 
@@ -80,7 +75,7 @@ public class Paragraph extends Content {
         int y = 0;
         switch(paragraphStyle.getFont().getFontAlign()){
             case ParagraphStyle.ParagraphFont.TopLeft:
-                x = textWidth/2;
+                x = getTextWidth()/2;
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.TopCenter:
@@ -88,11 +83,11 @@ public class Paragraph extends Content {
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.TopRight:
-                x = w-textWidth/2-getMarginRight();
+                x = w-getTextWidth()/2-getMarginRight();
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.CenterLeft:
-                x = textWidth/2;
+                x = getTextWidth()/2;
                 y = h/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.Center:
@@ -100,11 +95,11 @@ public class Paragraph extends Content {
                 y = h/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.CenterRight:
-                x = w-textWidth/2-getMarginRight();
+                x = w-getTextWidth()/2-getMarginRight();
                 y = h/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.BottomLeft:
-                x = textWidth/2;
+                x = getTextWidth()/2;
                 y = h - (h-textBaseLine);
                 break;
             case ParagraphStyle.ParagraphFont.BottomCenter:

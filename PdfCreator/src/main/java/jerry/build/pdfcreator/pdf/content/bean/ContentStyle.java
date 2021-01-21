@@ -17,16 +17,12 @@ public class ContentStyle implements Cloneable {
     public static final int MATCH_PARENT = -1;
     public static final int WRAP_CONTENT = -2;
     public static final int SELF = -3;
-
-    @IntDef({MATCH_PARENT, WRAP_CONTENT, SELF})
-    @Retention(RetentionPolicy.SOURCE)
-    @Target(ElementType.PARAMETER)
-    @interface KV {
-    }
+    public static final int WIGHT = -4;
 
     private int widthMode = SELF;
     private int heightMode = SELF;
 
+    private int weight = 0;
 
     private int width = 0;
     private int height = 0;
@@ -208,6 +204,14 @@ public class ContentStyle implements Cloneable {
         return heightMode;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     @Override
     public Object clone() {
         ContentStyle contentStyle = null;
@@ -286,6 +290,11 @@ public class ContentStyle implements Cloneable {
 
         public Builder setBackgroundColor(int backgroundColor) {
             contentStyle.setBackgroundColor(backgroundColor);
+            return this;
+        }
+
+        public Builder setWeight(int weight) {
+            contentStyle.setWeight(weight);
             return this;
         }
 

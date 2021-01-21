@@ -15,15 +15,12 @@ public class Photo extends Content {
         super(contentStyle);
     }
 
-
-
     @Override
     protected void draw(Canvas canvas) {
         super.draw(canvas);
         PhotoStyle photoStyle = (PhotoStyle) getContentStyle();
         if(photoStyle.getSrc()!=null){
             Paint paint = createPaint();
-
             switch(photoStyle.getScaleType()){
                 case PhotoStyle.CenterCrop:
                     Bitmap bitmap = imageScale(photoStyle.getSrc(), getWidth(), getHeight());
@@ -44,13 +41,12 @@ public class Photo extends Content {
                 case PhotoStyle.Src:
                     Bitmap bitmap2 = photoStyle.getSrc();
                     canvas.drawBitmap(bitmap2,new Rect(
-                            0,0,getWidth(),getHeight()
+                            0,0,bitmap2.getWidth(),bitmap2.getHeight()
                     ),new Rect(
-                            0,0,getWidth(),getHeight()
+                            0,0,bitmap2.getWidth(),bitmap2.getHeight()
                     ),paint);
                     break;
             }
-
         }
     }
 

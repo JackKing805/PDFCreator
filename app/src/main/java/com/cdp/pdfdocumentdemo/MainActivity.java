@@ -2,6 +2,8 @@ package com.cdp.pdfdocumentdemo;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -56,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void createSuccess(File file) {
                         loadPdfUrl(file.getAbsolutePath());
-                        baseDialog.dismiss();
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),3000);
                     }
 
                     @Override
                     public void createError(Exception e) {
-                        baseDialog.dismiss();
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),3000);
                     }
                 })));
 
@@ -81,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
          * 而一般情况下，为了安全起见，是需要将其设置为false的。
          */
         webSettings.setAllowUniversalAccessFromFileURLs(true);
-        webSettings.setSupportZoom(false);
-        webSettings.setBuiltInZoomControls(false);
+        webSettings.setSupportZoom(true);
+        webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);//不显示那个丑东西
     }
 

@@ -19,7 +19,6 @@ import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 public class ParagraphStyle extends ContentStyle {
     private String text;
     private ParagraphFont font;
-    private float weight = 0;
 
     public static class Builder {
         ParagraphStyle contentStyle = new ParagraphStyle();
@@ -27,6 +26,12 @@ public class ParagraphStyle extends ContentStyle {
         public Builder() {
             contentStyle.setWidthMode(ContentStyle.MATCH_PARENT);
             contentStyle.setHeightMode(ContentStyle.WRAP_CONTENT);
+        }
+
+
+        public Builder setWeight(int weight) {
+            contentStyle.setWeight(weight);
+            return this;
         }
 
         public Builder setWidthMode(int widthMode) {
@@ -104,24 +109,11 @@ public class ParagraphStyle extends ContentStyle {
             return this;
         }
 
-
-        public Builder setWeight(float weight) {
-            contentStyle.setWeight(weight);
-            return this;
-        }
-
         public ParagraphStyle create() {
             return contentStyle;
         }
     }
 
-    public float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(float weight) {
-        this.weight = weight;
-    }
 
     public void setText(String text) {
         this.text = text;

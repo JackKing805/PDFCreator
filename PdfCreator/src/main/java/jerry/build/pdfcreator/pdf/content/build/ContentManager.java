@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import jerry.build.pdfcreator.bean.PageHandle;
@@ -59,7 +60,6 @@ public class ContentManager {
             }
         }
     }
-
 
     private void layoutChildren(List<Content> children) {
         for (Content child : children) {

@@ -5,6 +5,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
@@ -29,32 +34,90 @@ public class Content extends ContentParent {
         int measureHeight = 0;
 
         if (widthMode == ContentStyle.MATCH_PARENT) {
-            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
+            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
+        } else if (widthMode == ContentStyle.WIGHT) {
+            measureWidth = calculatingWeight(getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight(), getCompanion(), 1);
         } else if (widthMode == ContentStyle.WRAP_CONTENT) {
             measureWidth = getWidth();
         } else if (widthMode == ContentStyle.SELF) {
-            if(getWidth()+getMarginLeft()+getParent().getPaddingLeft()>getParentWidth()-getMarginRight()-getParent().getPaddingRight()){
-                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
-            }else{
+            if (getWidth() + getMarginLeft() + getParent().getPaddingLeft() > getParentWidth() - getMarginRight() - getParent().getPaddingRight()) {
+                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
+            } else {
                 measureWidth = getWidth();
             }
+        } else {
+            measureWidth = getWidth();
         }
 
 
         if (heightMode == ContentStyle.MATCH_PARENT) {
-            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop()-getParent().getPaddingBottom();
+            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
+        } else if (heightMode == ContentStyle.WIGHT) {
+            measureHeight = calculatingWeight(getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom(), getCompanion(), 2);
         } else if (heightMode == ContentStyle.WRAP_CONTENT) {
             measureHeight = getHeight();
         } else if (heightMode == ContentStyle.SELF) {
-            if(getHeight()+getMarginTop()+getParent().getPaddingTop()>getParentHeight()-getMarginBottom()-getParent().getPaddingTop()){
-                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom()- getParent().getPaddingTop()-getParent().getPaddingBottom();
-            }else{
+            if (getHeight() + getMarginTop() + getParent().getPaddingTop() > getParentHeight() - getMarginBottom() - getParent().getPaddingBottom()) {
+                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
+            } else {
                 measureHeight = getHeight();
             }
+        } else {
+            measureHeight = getHeight();
         }
+
+        measure(widthMode, heightMode, getWidth(), getHeight());
         setMeasureStyle(measureWidth, measureHeight);
-        measure(widthMode,heightMode,getWidth(),getHeight());
     }
+
+
+    protected int calculatingWeight(int totalWidth, List<Content> companion, int type) {
+        if (totalWidth == 0) {
+            return 0;
+        }
+        if (companion == null) {
+            return totalWidth;
+        }
+
+
+        if (type == 1) {
+            int totalWight = getContentStyle().getWeight();
+            //width
+            for (Content child : companion) {
+                if (child.getWidthMode() == ContentStyle.WIGHT && child.getWidth() == 0) {
+                    totalWight = totalWight + child.getContentStyle().getWeight();
+                } else {
+                    totalWidth = totalWidth - child.getWidth();
+                }
+            }
+            if (totalWight == 0) {
+                return 0;
+            }
+
+            float percentWidth = totalWidth / totalWight;
+            return Double.valueOf(Math.ceil(getContentStyle().getWeight() * percentWidth)).intValue();
+        } else if (type == 2) {
+            //height
+            int totalWight = getContentStyle().getWeight();
+            //width
+            for (Content child : companion) {
+                if (child.getHeightMode() == ContentStyle.WIGHT && child.getHeight() == 0) {
+                    totalWight = child.getContentStyle().getWeight();
+                } else {
+                    totalWidth = totalWidth - child.getHeight();
+                }
+            }
+            if (totalWight == 0) {
+                return 0;
+            }
+
+            float percentWHeight = totalWidth / totalWight;
+            return Double.valueOf(Math.ceil(getContentStyle().getWeight() * percentWHeight)).intValue();
+        } else {
+            return 0;
+        }
+    }
+
 
     @Override
     public void drawDefault(Canvas canvas) {
@@ -62,18 +125,18 @@ public class Content extends ContentParent {
         paint.setDither(true);
         paint.setAntiAlias(true);
         paint.setColor(getContentStyle().getBackgroundColor());
-        int left = getParentMPLeft()+getMarginLeft();
-        int top = getParentMPTop()+getMarginTop();
+        int left = getParentMPLeft() + getMarginLeft();
+        int top = getParentMPTop() + getMarginTop();
 
         canvas.save();
-        canvas.translate(left,top);
+        canvas.translate(left, top);
 
         int right = getWidth();
         int bottom = getHeight();
 
-        Rect rect = new Rect(0,0,right,bottom);
+        Rect rect = new Rect(0, 0, right, bottom);
         canvas.clipRect(rect);
-        canvas.drawRect(rect,paint);
+        canvas.drawRect(rect, paint);
         draw(canvas);
         canvas.restore();
     }
@@ -82,14 +145,14 @@ public class Content extends ContentParent {
     /**
      * 提供给子类自己测量的方法
      */
-    protected void measure(int widthMode, int heightMode,int height,int width){
+    protected void measure(int widthMode, int heightMode, int height, int width) {
 
     }
 
     /**
      * 提供给子类自己绘制的方法
      */
-    protected void draw(Canvas canvas){
+    protected void draw(Canvas canvas) {
     }
 
     /**
@@ -211,5 +274,39 @@ public class Content extends ContentParent {
      */
     protected void setParent(Content parent) {
         this.parent = parent;
+    }
+
+
+    /**
+     * 拿到同一级的其它控件
+     *
+     * @return
+     */
+    public List<Content> getCompanion() {
+        if (getGroupParent() != null) {
+            List<Content> children = getGroupParent().getChildren();
+            List<Content> companion = new ArrayList<>(children);
+            Iterator<Content> contentListIterator = companion.iterator();
+            while (contentListIterator.hasNext()) {
+                Content content = contentListIterator.next();
+                if (content == this) {
+                    contentListIterator.remove();
+                }
+            }
+            return companion;
+        }
+        return null;
+    }
+
+    protected ContentGroup getGroupParent() {
+        if (isRootContent()) {
+            return null;
+        } else {
+            try {
+                return (ContentGroup) getParent();
+            } catch (Exception e) {
+                return null;
+            }
+        }
     }
 }

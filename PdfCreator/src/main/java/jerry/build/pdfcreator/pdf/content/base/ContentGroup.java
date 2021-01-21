@@ -18,7 +18,7 @@ import jerry.build.pdfcreator.pdf.content.bean.RowStyle;
 import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 import jerry.build.pdfcreator.pdf.content.impl.Row;
 
-public class ContentGroup extends Content{
+public class ContentGroup extends Content {
     private static final String TAG = "ContentGroup";
     //包含的子Content
     private final List<Content> children;
@@ -26,6 +26,7 @@ public class ContentGroup extends Content{
 
     public static final int vertical = 0x01;
     public static final int horizontal = 0x02;
+
     @IntDef({vertical, horizontal})
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Retention(RetentionPolicy.SOURCE)
@@ -39,7 +40,7 @@ public class ContentGroup extends Content{
 
     @Override
     public void measureDefault() {
-        Log.e(TAG, "measureDefault: "+toString() );
+        Log.e(TAG, "measureDefault: " + toString());
         int widthMode = getWidthMode();
         int heightMode = getHeightMode();
 
@@ -47,54 +48,60 @@ public class ContentGroup extends Content{
         int measureHeight = 0;
 
         if (widthMode == ContentStyle.MATCH_PARENT) {
-            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
+            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
+        } else if (widthMode == ContentStyle.WIGHT) {
+            measureWidth = calculatingWeight(getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight(), getCompanion(), 1);
         } else if (widthMode == ContentStyle.WRAP_CONTENT) {
             measureWidth = measureChildren()[0];
         } else if (widthMode == ContentStyle.SELF) {
-            if(getWidth()+getMarginLeft()+getParent().getPaddingLeft()>getParentWidth()-getMarginRight()-getParent().getPaddingRight()){
-                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight()- getParent().getPaddingLeft()-getParent().getPaddingRight();
-            }else{
+            if (getWidth() + getMarginLeft() + getParent().getPaddingLeft() > getParentWidth() - getMarginRight() - getParent().getPaddingRight()) {
+                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
+            } else {
                 measureWidth = getWidth();
             }
         }
 
         if (heightMode == ContentStyle.MATCH_PARENT) {
-            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop()-getParent().getPaddingBottom();
+            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
+        } else if (heightMode == ContentStyle.WIGHT) {
+            measureHeight = calculatingWeight(getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom(), getCompanion(), 2);
         } else if (heightMode == ContentStyle.WRAP_CONTENT) {
             measureHeight = measureChildren()[1];
         } else if (heightMode == ContentStyle.SELF) {
-            if(getHeight()+getMarginTop()+getParent().getPaddingTop()>getParentHeight()-getMarginBottom()-getParent().getPaddingTop()){
-                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom()- getParent().getPaddingTop()-getParent().getPaddingBottom();
-            }else{
+            if (getHeight() + getMarginTop() + getParent().getPaddingTop() > getParentHeight() - getMarginBottom() - getParent().getPaddingBottom()) {
+                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
+            } else {
                 measureHeight = getHeight();
             }
         }
+        measure(widthMode, heightMode, getWidth(), getHeight());
         setMeasureStyle(measureWidth, measureHeight);
-        measure(widthMode,heightMode,getWidth(),getHeight());
     }
 
-    public void layout(){}
 
-    protected int[] measureChildren(){
-        return new int[]{0,0};
+    public void layout() {
+    }
+
+    protected int[] measureChildren() {
+        return new int[]{0, 0};
     }
 
     /**
      * 添加子Content
      */
-    public void addContent(Content content){
+    public void addContent(Content content) {
         content.setParent(this);
         children.add(content);
     }
 
-    public void addSpace(@SpaceOrientation int spaceOrientation,int spaceDistance){
-        if(spaceOrientation == horizontal){
+    public void addSpace(@SpaceOrientation int spaceOrientation, int spaceDistance) {
+        if (spaceOrientation == horizontal) {
             children.add(new Row(new RowStyle.Builder()
                     .setHeightMode(ContentStyle.MATCH_PARENT)
                     .setWidth(spaceDistance)
                     .setBackgroundColor(Color.TRANSPARENT)
                     .create()));
-        }else{
+        } else {
             children.add(new Row(new RowStyle.Builder()
                     .setWidthMode(ContentStyle.MATCH_PARENT)
                     .setHeight(spaceDistance)
@@ -106,12 +113,12 @@ public class ContentGroup extends Content{
     /**
      * 判断是否有子content
      */
-    public boolean haveChild(){
+    public boolean haveChild() {
         return !children.isEmpty();
     }
 
 
-    public List<Content> getChildren(){
+    public List<Content> getChildren() {
         return children;
     }
 }

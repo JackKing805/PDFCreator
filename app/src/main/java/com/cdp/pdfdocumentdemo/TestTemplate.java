@@ -8,6 +8,7 @@ import java.util.Date;
 import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.model.DefaultTemplate;
 import jerry.build.pdfcreator.pdf.content.base.ContentGroup;
+import jerry.build.pdfcreator.pdf.content.base.ParagraphFontFamily;
 import jerry.build.pdfcreator.pdf.content.bean.ContentStyle;
 import jerry.build.pdfcreator.pdf.content.bean.ParagraphStyle;
 import jerry.build.pdfcreator.pdf.content.bean.PhotoStyle;
@@ -26,7 +27,7 @@ public class TestTemplate extends DefaultTemplate {
                 .setHeight(40)
                 .setMarginTop(50)
                 .setText("Invoice")
-                .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 40, ParagraphStyle.ParagraphFont.Bold, ParagraphStyle.ParagraphFont.TopCenter, "RuslanDisplay.ttf"))
+                .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 40, ParagraphStyle.ParagraphFont.Bold, ParagraphStyle.ParagraphFont.TopCenter, ParagraphFontFamily.font1))
                 .create()));
 
         content.addContent(new Paragraph(new ParagraphStyle.Builder()
@@ -72,26 +73,36 @@ public class TestTemplate extends DefaultTemplate {
 
         titleLine.addContent(new Paragraph(new ParagraphStyle.Builder()
                 .setText("Name")
-                .setWidth(320)
-                .setWidthMode(ContentStyle.SELF)
+                .setWidth(0)
+                .setWeight(1)
+                .setWidthMode(ContentStyle.WIGHT)
                 .setHeightMode(ContentStyle.WRAP_CONTENT)
-                .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "HanaleiFill-Regular.ttf"))
+                .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"),
+                        20,
+                        ParagraphStyle.ParagraphFont.Normal,
+                        ParagraphStyle.ParagraphFont.Center,
+                        "HanaleiFill-Regular.ttf"))
                 .setMarginRight(20)
                 .create()));
 
         titleLine.addContent(new Paragraph(new ParagraphStyle.Builder()
                 .setText("Money")
-                .setWidth(320)
-                .setWidthMode(ContentStyle.SELF)
+                .setWidth(0)
+                .setWeight(2)
+                .setWidthMode(ContentStyle.WIGHT)
                 .setHeightMode(ContentStyle.WRAP_CONTENT)
-                .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "HanaleiFill-Regular.ttf"))
+                .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"),
+                        20,
+                        ParagraphStyle.ParagraphFont.Normal,
+                        ParagraphStyle.ParagraphFont.Center,
+                        "HanaleiFill-Regular.ttf"))
                 .setMarginRight(20)
                 .create()));
 
         titleLine.addContent(new Paragraph(new ParagraphStyle.Builder()
                 .setText("Time")
-                .setWidth(320)
-                .setWidthMode(ContentStyle.SELF)
+                .setWeight(1)
+                .setWidthMode(ContentStyle.WIGHT)
                 .setHeightMode(ContentStyle.WRAP_CONTENT)
                 .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "HanaleiFill-Regular.ttf"))
                 .setMarginRight(20)
@@ -125,17 +136,18 @@ public class TestTemplate extends DefaultTemplate {
                     .create());
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
                     .setText("Jerry"+i)
-                    .setWidth(320)
-                    .setWidthMode(ContentStyle.SELF)
+                    .setWidth(0)
+                    .setWeight(1)
+                    .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
-                    .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "app_font_regular.ttf"))
-                    .setMarginRight(20)
+                    .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.CenterLeft, "app_font_regular.ttf"))
                     .create()));
 
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
                     .setText(""+((i+1)*20))
-                    .setWidth(320)
-                    .setWidthMode(ContentStyle.SELF)
+                    .setWidth(0)
+                    .setWeight(3)
+                    .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
                     .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "app_font_regular.ttf"))
                     .setMarginRight(20)
@@ -143,11 +155,12 @@ public class TestTemplate extends DefaultTemplate {
 
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
                     .setText(sp.format(new Date()))
-                    .setWidth(320)
-                    .setWidthMode(ContentStyle.SELF)
+                    .setWidth(0)
+                    .setWeight(1)
+                    .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
-                    .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "app_font_regular.ttf"))
-                    .setMarginRight(20)
+                    .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.CenterRight, "app_font_regular.ttf"))
+                    .setMarginRight(25)
                     .create()));
             content.addContent(row);
         }
@@ -156,7 +169,7 @@ public class TestTemplate extends DefaultTemplate {
                 .setSrc(PageHandleHolder.newInstance().getContext().getApplicationContext().getFilesDir().getAbsolutePath() + "/img/sign.png")
                 .setMarginLeft(10)
                 .setMarginTop(10)
-                .setScaleType(PhotoStyle.CenterCrop)
+                .setScaleType(PhotoStyle.FitCenter)
                 .setHeight(100)
                 .setWidth(200)
                 .create()));

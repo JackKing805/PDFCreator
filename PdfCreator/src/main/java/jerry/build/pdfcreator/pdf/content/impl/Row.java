@@ -55,7 +55,6 @@ public class Row extends ContentGroup {
         super.measure(widthMode, heightMode, height, width);
         RowStyle rowStyle = (RowStyle) getContentStyle();
 
-
         if(rowStyle.isHaveHorizontalBorder()){
             getContentStyle().setPaddingLeft(rowStyle.getBorderWidth());
             getContentStyle().setPaddingRight(rowStyle.getBorderWidth());
@@ -92,9 +91,7 @@ public class Row extends ContentGroup {
                 wh[0] = wh[0]+child.getWidth()+child.getMarginRight()+child.getMarginLeft();
             }
 
-        }
-
-        if(rowStyle.getOrientation()==RowStyle.vertical){
+        }else{
             //竖向布局
             //算最大宽度
             if(!children.isEmpty()){
@@ -107,7 +104,6 @@ public class Row extends ContentGroup {
             }else{
                 wh[0] = 20;
             }
-
             for (Content child:children) {
                 wh[1] = wh[1]+child.getHeight()+child.getMarginTop()+child.getMarginBottom();
             }

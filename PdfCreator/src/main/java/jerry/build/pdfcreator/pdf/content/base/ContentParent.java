@@ -12,6 +12,8 @@ public class ContentParent {
     //每个content的基本属性
     private final ContentStyle contentStyle;
 
+    private boolean isMeasure = false;
+
     public ContentParent(ContentStyle contentStyle) {
         this.contentStyle = (ContentStyle) contentStyle.clone();
     }
@@ -81,6 +83,8 @@ public class ContentParent {
     }
 
     protected void setMeasureStyle(int width,int height){
+        if(isMeasure)return;
+        isMeasure = true;
         getContentStyle().setHeight(height);
         getContentStyle().setWidth(width);
     }
