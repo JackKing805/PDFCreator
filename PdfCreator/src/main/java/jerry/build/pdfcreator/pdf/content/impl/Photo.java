@@ -16,6 +16,12 @@ public class Photo extends Content {
     }
 
     @Override
+    protected void measure(int widthMode, int heightMode, int height, int width) {
+        super.measure(widthMode, heightMode, height, width);
+
+    }
+
+    @Override
     protected void draw(Canvas canvas) {
         super.draw(canvas);
         PhotoStyle photoStyle = (PhotoStyle) getContentStyle();
@@ -51,6 +57,9 @@ public class Photo extends Content {
     }
 
 
+    /**
+     * 图片缩放
+     */
     public static Bitmap imageScale(Bitmap bitmap, int dst_w, int dst_h) {
         int src_w = bitmap.getWidth();
         int src_h = bitmap.getHeight();

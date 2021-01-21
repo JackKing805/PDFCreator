@@ -123,7 +123,7 @@ public class TestTemplate extends DefaultTemplate {
         ));
         content.addSpace(ContentGroup.vertical,20);
 
-        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd/hh:MM:ss");
         for (int i = 0; i < 10; i++) {
             Row row = new Row(new RowStyle.Builder()
                     .setWidthMode(ContentStyle.MATCH_PARENT)
@@ -141,7 +141,12 @@ public class TestTemplate extends DefaultTemplate {
                     .setWeight(1)
                     .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
-                    .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.CenterLeft, "app_font_regular.ttf"))
+                    .setFont(new ParagraphStyle.ParagraphFont.Builder()
+                            .setFontFamily(ParagraphFontFamily.font9)
+                            .setFontColor(Color.BLACK)
+                            .setFontSize(20)
+                            .setFontAlign(ParagraphStyle.ParagraphFont.CenterRight)
+                        .create())
                     .create()));
 
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
@@ -157,6 +162,7 @@ public class TestTemplate extends DefaultTemplate {
                     .setText(sp.format(new Date()))
                     .setWidth(0)
                     .setWeight(1)
+                    .setMarginRight(20)
                     .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
                     .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.CenterRight, "app_font_regular.ttf"))
@@ -168,7 +174,7 @@ public class TestTemplate extends DefaultTemplate {
                 .setSrc(PageHandleHolder.newInstance().getContext().getApplicationContext().getFilesDir().getAbsolutePath() + "/img/sign.png")
                 .setMarginLeft(10)
                 .setMarginTop(10)
-                .setScaleType(PhotoStyle.FitCenter)
+                .setScaleType(PhotoStyle.Src)
                 .setHeight(100)
                 .setWidth(200)
                 .create()));
@@ -184,6 +190,7 @@ public class TestTemplate extends DefaultTemplate {
                 .setHaveHorizontalBorder(true)
                 .setMarginRight(10)
                 .setMarginLeft(10)
+                .setBackgroundColor(Color.BLACK)
                 .setHeight(40)
                 .setMarginTop(1)
                 .create()));

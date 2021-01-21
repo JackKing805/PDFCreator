@@ -61,7 +61,7 @@ public class Content extends ContentParent {
             }
         }
 
-        measure(widthMode, heightMode, getWidth(), getHeight());
+        measure(widthMode, heightMode, measureHeight, measureWidth);
         setMeasureStyle(measureWidth, measureHeight);
     }
 

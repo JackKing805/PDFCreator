@@ -39,45 +39,22 @@ public class ContentGroup extends Content {
     }
 
     @Override
-    public void measureDefault() {
-        Log.e(TAG, "measureDefault: " + toString());
-        int widthMode = getWidthMode();
-        int heightMode = getHeightMode();
+    protected void measure(int widthMode, int heightMode, int height, int width) {
+        super.measure(widthMode, heightMode, height, width);
 
-        int measureWidth = 0;
-        int measureHeight = 0;
+        int measureWidth = width;
+        int measureHeight = height;
 
-        if (widthMode == ContentStyle.MATCH_PARENT) {
-            measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
-        } else if (widthMode == ContentStyle.WIGHT) {
-            measureWidth = calculatingWeight(getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight(), getCompanion(), 1);
-        } else if (widthMode == ContentStyle.WRAP_CONTENT) {
+        if (widthMode == ContentStyle.WRAP_CONTENT) {
             measureWidth = measureChildren()[0];
-        } else if (widthMode == ContentStyle.SELF) {
-            if (getWidth() + getMarginLeft() + getParent().getPaddingLeft() > getParentWidth() - getMarginRight() - getParent().getPaddingRight()) {
-                measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
-            } else {
-                measureWidth = getWidth()-getMarginLeft();
-            }
         }
 
-        if (heightMode == ContentStyle.MATCH_PARENT) {
-            measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
-        } else if (heightMode == ContentStyle.WIGHT) {
-            measureHeight = calculatingWeight(getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom(), getCompanion(), 2);
-        } else if (heightMode == ContentStyle.WRAP_CONTENT) {
+        if (heightMode == ContentStyle.WRAP_CONTENT) {
             measureHeight = measureChildren()[1];
-        } else if (heightMode == ContentStyle.SELF) {
-            if (getHeight() + getMarginTop() + getParent().getPaddingTop() > getParentHeight() - getMarginBottom() - getParent().getPaddingBottom()) {
-                measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
-            } else {
-                measureHeight = getHeight()-getMarginTop();
-            }
         }
-        measure(widthMode, heightMode, getWidth(), getHeight());
+
         setMeasureStyle(measureWidth, measureHeight);
     }
-
 
     public void layout() {
     }
