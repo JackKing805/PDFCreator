@@ -57,7 +57,7 @@ public class ContentGroup extends Content {
             if (getWidth() + getMarginLeft() + getParent().getPaddingLeft() > getParentWidth() - getMarginRight() - getParent().getPaddingRight()) {
                 measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
             } else {
-                measureWidth = getWidth();
+                measureWidth = getWidth()-getMarginLeft();
             }
         }
 
@@ -71,7 +71,7 @@ public class ContentGroup extends Content {
             if (getHeight() + getMarginTop() + getParent().getPaddingTop() > getParentHeight() - getMarginBottom() - getParent().getPaddingBottom()) {
                 measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
             } else {
-                measureHeight = getHeight();
+                measureHeight = getHeight()-getMarginTop();
             }
         }
         measure(widthMode, heightMode, getWidth(), getHeight());

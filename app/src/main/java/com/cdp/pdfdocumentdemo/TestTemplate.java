@@ -88,7 +88,7 @@ public class TestTemplate extends DefaultTemplate {
         titleLine.addContent(new Paragraph(new ParagraphStyle.Builder()
                 .setText("Money")
                 .setWidth(0)
-                .setWeight(2)
+                .setWeight(1)
                 .setWidthMode(ContentStyle.WIGHT)
                 .setHeightMode(ContentStyle.WRAP_CONTENT)
                 .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"),
@@ -134,6 +134,7 @@ public class TestTemplate extends DefaultTemplate {
                     .setHeight(40)
                     .setMarginTop(5)
                     .create());
+
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
                     .setText("Jerry"+i)
                     .setWidth(0)
@@ -146,11 +147,10 @@ public class TestTemplate extends DefaultTemplate {
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
                     .setText(""+((i+1)*20))
                     .setWidth(0)
-                    .setWeight(3)
+                    .setWeight(1)
                     .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
                     .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.Center, "app_font_regular.ttf"))
-                    .setMarginRight(20)
                     .create()));
 
             row.addContent(new Paragraph(new ParagraphStyle.Builder()
@@ -160,7 +160,6 @@ public class TestTemplate extends DefaultTemplate {
                     .setWidthMode(ContentStyle.WIGHT)
                     .setHeightMode(ContentStyle.MATCH_PARENT)
                     .setFont(new ParagraphStyle.ParagraphFont(Color.parseColor("#3498db"), 20, ParagraphStyle.ParagraphFont.Normal, ParagraphStyle.ParagraphFont.CenterRight, "app_font_regular.ttf"))
-                    .setMarginRight(25)
                     .create()));
             content.addContent(row);
         }

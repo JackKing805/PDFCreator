@@ -58,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void createSuccess(File file) {
                         loadPdfUrl(file.getAbsolutePath());
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),3000);
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),1500);
                     }
 
                     @Override
                     public void createError(Exception e) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),3000);
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),1500);
                     }
                 })));
 

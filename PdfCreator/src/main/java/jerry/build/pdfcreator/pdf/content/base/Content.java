@@ -16,7 +16,7 @@ import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 
 public class Content extends ContentParent {
     private static final String TAG = "Content";
-    //当前content的父亲
+    //当前content的父节点
     private Content parent;
 
     public Content(ContentStyle contentStyle) {
@@ -26,7 +26,7 @@ public class Content extends ContentParent {
 
     @Override
     public void measureDefault() {
-//        Log.e(TAG, "measureDefault: "+toString() );
+        Log.e(TAG, "measureDefault: "+toString() );
         int widthMode = getWidthMode();
         int heightMode = getHeightMode();
 
@@ -43,12 +43,9 @@ public class Content extends ContentParent {
             if (getWidth() + getMarginLeft() + getParent().getPaddingLeft() > getParentWidth() - getMarginRight() - getParent().getPaddingRight()) {
                 measureWidth = getParentWidth() - getMarginLeft() - getMarginRight() - getParent().getPaddingLeft() - getParent().getPaddingRight();
             } else {
-                measureWidth = getWidth();
+                measureWidth = getWidth()-getMarginLeft();
             }
-        } else {
-            measureWidth = getWidth();
         }
-
 
         if (heightMode == ContentStyle.MATCH_PARENT) {
             measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
@@ -60,10 +57,8 @@ public class Content extends ContentParent {
             if (getHeight() + getMarginTop() + getParent().getPaddingTop() > getParentHeight() - getMarginBottom() - getParent().getPaddingBottom()) {
                 measureHeight = getParentHeight() - getMarginTop() - getMarginBottom() - getParent().getPaddingTop() - getParent().getPaddingBottom();
             } else {
-                measureHeight = getHeight();
+                measureHeight = getHeight()-getMarginTop();
             }
-        } else {
-            measureHeight = getHeight();
         }
 
         measure(widthMode, heightMode, getWidth(), getHeight());
@@ -78,7 +73,6 @@ public class Content extends ContentParent {
         if (companion == null) {
             return totalWidth;
         }
-
 
         if (type == 1) {
             int totalWight = getContentStyle().getWeight();
