@@ -39,7 +39,7 @@ public class PDFCreator {
 
             //创建页面
             PageCreator pageCreator = new PageCreator(pageStyle);
-            pageCreator.createPage(context);
+            pageCreator.startCreate(context);
 
             //添加内容
             ContentCreator contentCreator = new ContentCreator();

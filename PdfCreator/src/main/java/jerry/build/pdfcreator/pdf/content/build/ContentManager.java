@@ -24,7 +24,7 @@ public class ContentManager {
                 .setHeight(PageHandleHolder.newInstance().getPageStyle().getHeight())
                 .setHeightMode(ContentStyle.MATCH_PARENT)
                 .setWidthMode(ContentStyle.MATCH_PARENT)
-                .setBackgroundColor(Color.RED)
+                .setBackgroundColor(Color.TRANSPARENT)
                 .create();
         rootContent = new ContentGroup(contentStyle);
 
@@ -43,6 +43,8 @@ public class ContentManager {
             List<Content> children = new ArrayList<>();
             children.add(rootContent);
             measureChildren(children);
+            layoutChildren(children);
+            drawChildren(children);
         }
     }
 
@@ -57,6 +59,32 @@ public class ContentManager {
             }
         }
     }
+
+
+    private void layoutChildren(List<Content> children) {
+        for (Content child : children) {
+            try{
+                ContentGroup content = (ContentGroup) child;
+                layoutChildren(content.getChildren());
+                content.layout();
+            }catch (ClassCastException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void drawChildren(List<Content> children) {
+        for (Content child : children) {
+            child.drawDefault(PageHandleHolder.newInstance().getCanvas());
+            try{
+                ContentGroup content = (ContentGroup) child;
+                drawChildren(content.getChildren());
+            }catch (ClassCastException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
     public Row getRootContent() {

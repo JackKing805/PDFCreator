@@ -12,8 +12,9 @@ public class Paragraph extends Content {
     private Paint paint;
     private Paint.FontMetrics metrics;
     private ParagraphStyle paragraphStyle;
-    private int w;
-    private int h;
+
+    private int textWidth = 0;
+    private int textHeight = 0;
 
     public Paragraph(ParagraphStyle contentStyle) {
         super(contentStyle);
@@ -29,22 +30,47 @@ public class Paragraph extends Content {
         paint.setFakeBoldText(paragraphStyle.getFont().getFontStyle()==ParagraphStyle.ParagraphFont.Bold);
         paint.setTypeface(paragraphStyle.getFont().getFontFamily());
         paint.setTextAlign(Paint.Align.CENTER);
-
         metrics = paint.getFontMetrics();
-        this.w = Float.valueOf(paint.measureText(paragraphStyle.getText())).intValue();
-        this.h = Double.valueOf((Math.abs(metrics.top)+Math.abs(metrics.bottom))).intValue();
 
-        setMeasureStyle(getParentWidth(),getParentHeight());
+        textWidth = Double.valueOf(Math.ceil(paint.measureText(paragraphStyle.getText()))).intValue();
+        textHeight = Double.valueOf(Math.ceil((Math.abs(metrics.top)+Math.abs(metrics.bottom)+Math.abs(metrics.leading)))).intValue();
+        int measureWidth = 0;
+        int measureHeight = 0;
+
+        if(widthMode==ContentStyle.WRAP_CONTENT && width == 0){
+            width = Double.valueOf(Math.ceil(getParentWidth() * paragraphStyle.getWeight())).intValue();
+            setMeasureStyle(width,height);
+        }
+        else if(widthMode==ContentStyle.WRAP_CONTENT){
+            measureWidth = textWidth;
+        }else if(widthMode==ContentStyle.MATCH_PARENT){
+            measureWidth = getParentWidth();
+        }else{
+            measureWidth = getWidth();
+        }
+
+        if(heightMode==ContentStyle.WRAP_CONTENT && height == 0){
+            height = Double.valueOf(Math.ceil(getParentHeight() * paragraphStyle.getWeight())).intValue();
+            setMeasureStyle(width,height);
+        } else if(heightMode==ContentStyle.WRAP_CONTENT){
+            measureHeight = textHeight;
+        }else if(heightMode==ContentStyle.MATCH_PARENT){
+            measureHeight = getParentHeight();
+        }else{
+            measureHeight = getHeight();
+        }
+
+
+
+        setMeasureStyle(measureWidth,measureHeight);
     }
 
     @Override
     protected void draw(Canvas canvas) {
         super.draw(canvas);
 
-        int parentWidth = getParentWidth();
-        int parentHeight = getParentHeight();
-
-
+        int w = getWidth();
+        int h = getHeight();
 
         int textCenterLiner = Float.valueOf((Math.abs(metrics.top)+Math.abs(metrics.bottom))/2).intValue();
         int textBaseLine = Float.valueOf((((Math.abs(metrics.top)+Math.abs(metrics.bottom))/2)+((Math.abs(metrics.top)+Math.abs(metrics.bottom))/2-Math.abs(metrics.bottom)))).intValue();
@@ -54,40 +80,40 @@ public class Paragraph extends Content {
         int y = 0;
         switch(paragraphStyle.getFont().getFontAlign()){
             case ParagraphStyle.ParagraphFont.TopLeft:
-                x = getMarginLeft();
+                x = textWidth/2;
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.TopCenter:
-                x = parentWidth/2;
+                x = w/2;
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.TopRight:
-                x = parentWidth-w/2-getMarginRight();
+                x = w-textWidth/2-getMarginRight();
                 y = textBaseLine;
                 break;
             case ParagraphStyle.ParagraphFont.CenterLeft:
-                x = getMarginLeft();
-                y = parentHeight/2+textCenterToBase;
+                x = textWidth/2;
+                y = h/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.Center:
-                x = parentWidth/2;
-                y = parentHeight/2+textCenterToBase;
+                x = w/2;
+                y = h/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.CenterRight:
-                x = parentWidth-w/2-getMarginRight();
-                y = parentHeight/2+textCenterToBase;
+                x = w-textWidth/2-getMarginRight();
+                y = h/2+textCenterToBase;
                 break;
             case ParagraphStyle.ParagraphFont.BottomLeft:
-                x = getMarginLeft();
-                y = parentHeight - (h-textBaseLine);
+                x = textWidth/2;
+                y = h - (h-textBaseLine);
                 break;
             case ParagraphStyle.ParagraphFont.BottomCenter:
-                x = parentWidth/2;
-                y = parentHeight - (h-textBaseLine);
+                x = w/2;
+                y = h - (h-textBaseLine);
                 break;
             case ParagraphStyle.ParagraphFont.BottomRight:
-                x = parentWidth-w/2-getMarginRight();
-                y = parentHeight - (h-textBaseLine);
+                x = w-w/2-getMarginRight();
+                y = h - (h-textBaseLine);
                 break;
         }
 
@@ -96,10 +122,10 @@ public class Paragraph extends Content {
     }
 
     public int getTextWidth() {
-        return w;
+        return textWidth;
     }
 
     public int getTextHeight() {
-        return h;
+        return textHeight;
     }
 }

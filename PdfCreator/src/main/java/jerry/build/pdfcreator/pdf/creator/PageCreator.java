@@ -25,11 +25,16 @@ public class PageCreator {
         this.pageStyle = pageStyle;
     }
 
-    public void createPage(Context context){
+    public void startCreate(Context context){
         document = new PdfDocument();
         PdfDocument.PageInfo pageInfo =  new PdfDocument.PageInfo.Builder(pageStyle.getWidth(),pageStyle.getHeight(), pageStyle.getPageSum()).create();
         page = document.startPage(pageInfo);
         PageHandleHolder.newInstance().setPageHandle(new PageHandle(pageStyle,page.getCanvas(),context));
+    }
+
+    public PdfDocument.Page createNewPage() {
+        PdfDocument.PageInfo pageInfo =  new PdfDocument.PageInfo.Builder(pageStyle.getWidth(),pageStyle.getHeight(), pageStyle.getPageSum()).create();
+        return document.startPage(pageInfo);
     }
 
     public File savePage(){

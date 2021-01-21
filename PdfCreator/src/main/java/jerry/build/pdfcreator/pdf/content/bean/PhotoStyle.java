@@ -1,37 +1,38 @@
 package jerry.build.pdfcreator.pdf.content.bean;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
-import androidx.appcompat.widget.LinearLayoutCompat;
 
+import java.io.File;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public class RowStyle extends ContentStyle {
-    private int borderWidth = 0;
-    private boolean haveVerticalBorder = false;
-    private boolean haveHorizontalBorder = false;
-    @Orientation
-    private int orientation = vertical;
+import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 
-    public static final int vertical = 0x01;
-    public static final int horizontal = 0x02;
+public class PhotoStyle extends ContentStyle{
+    private Bitmap src;
+    private int ScaleType = CenterCrop;
 
-    @IntDef({vertical, horizontal})
+    public static final int CenterCrop = 0x01;
+    public static final int Src = 0x02;
+    public static final int FitCenter = 0x03;
+
+
+    @IntDef({CenterCrop, Src,FitCenter})
     @Target({ElementType.FIELD, ElementType.PARAMETER})
     @Retention(RetentionPolicy.SOURCE)
-    @interface Orientation {
+    @interface ScaleType {
     }
 
 
     public static class Builder {
-        RowStyle contentStyle = new RowStyle();
-
+        PhotoStyle contentStyle = new PhotoStyle();
 
         public Builder setWidthMode(int widthMode) {
             contentStyle.setWidthMode(widthMode);
@@ -98,69 +99,51 @@ public class RowStyle extends ContentStyle {
             return this;
         }
 
-        public Builder setBorderWidth(int borderWidth) {
-            contentStyle.setBorderWidth(borderWidth);
+
+        public Builder setSrc(Bitmap src) {
+            contentStyle.setSrc(src);
             return this;
         }
 
-        public Builder setHaveVerticalBorder(boolean haveVerticalBorder) {
-            contentStyle.setHaveVerticalBorder(haveVerticalBorder);
+        public Builder setSrc(int resID) {
+            Drawable drawable = PageHandleHolder.newInstance().getContext().getResources().getDrawable(resID);
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            return setSrc(bitmap);
+        }
+
+        public Builder setSrc(File file) {
+            return setSrc(file.getAbsolutePath());
+        }
+
+        public Builder setSrc(String path) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            return setSrc(bitmap);
+        }
+
+        public Builder setScaleType(@ScaleType int scaleType) {
+            contentStyle.setScaleType(scaleType);
             return this;
         }
 
-        public Builder setHaveHorizontalBorder(boolean haveHorizontalBorder) {
-            contentStyle.setHaveHorizontalBorder(haveHorizontalBorder);
-            return this;
-        }
-
-        public Builder setOrientation(int orientation) {
-            contentStyle.setOrientation(orientation);
-            return this;
-        }
-
-        public RowStyle create() {
+        public PhotoStyle create() {
             return contentStyle;
         }
     }
 
-    public void setBorderWidth(int borderWidth) {
-        this.borderWidth = borderWidth;
+    public Bitmap getSrc() {
+        return src;
     }
 
-    public void setHaveVerticalBorder(boolean haveVerticalBorder) {
-        this.haveVerticalBorder = haveVerticalBorder;
+    public void setSrc(Bitmap src) {
+        this.src = src;
     }
 
-    public void setHaveHorizontalBorder(boolean haveHorizontalBorder) {
-        this.haveHorizontalBorder = haveHorizontalBorder;
+    public int getScaleType() {
+        return ScaleType;
     }
 
-
-    public void setOrientation(int orientation) {
-        this.orientation = orientation;
-    }
-
-    public static int getVertical() {
-        return vertical;
-    }
-
-    public static int getHorizontal() {
-        return horizontal;
-    }
-
-    public int getOrientation() {
-        return orientation;
-    }
-
-    public int getBorderWidth() {
-        return borderWidth;
-    }
-
-    public boolean isHaveVerticalBorder() {
-        return haveVerticalBorder;
-    }
-
-    public boolean isHaveHorizontalBorder() {
-        return haveHorizontalBorder;
+    public void setScaleType(@ScaleType int scaleType) {
+        ScaleType = scaleType;
     }
 }

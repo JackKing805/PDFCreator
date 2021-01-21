@@ -48,10 +48,14 @@ public class Row extends ContentGroup {
         }
     }
 
+
+
     @Override
     protected void measure(int widthMode, int heightMode, int height, int width) {
         super.measure(widthMode, heightMode, height, width);
         RowStyle rowStyle = (RowStyle) getContentStyle();
+
+
         if(rowStyle.isHaveHorizontalBorder()){
             getContentStyle().setPaddingLeft(rowStyle.getBorderWidth());
             getContentStyle().setPaddingRight(rowStyle.getBorderWidth());
@@ -66,8 +70,49 @@ public class Row extends ContentGroup {
 
     @Override
     protected int[] measureChildren() {
+        int[] wh = new int[2];
+        RowStyle rowStyle = (RowStyle) getContentStyle();
+        List<Content> children = getChildren();
+        if(rowStyle.getOrientation()==RowStyle.horizontal){
+            //横向布局
 
-        return super.measureChildren();
+            //算最大高度
+            if(!children.isEmpty()){
+                wh[1] = children.get(0).getHeight();
+                for (int i = 0; i < children.size(); i++) {
+                    if (wh[1]<children.get(i).getHeight()+children.get(i).getMarginTop()+children.get(i).getMarginBottom()) {
+                        wh[1]=children.get(i).getHeight()+children.get(i).getMarginTop()+children.get(i).getMarginBottom();
+                    }
+                }
+            }else{
+                wh[1] = 20;
+            }
+
+            for (Content child:children) {
+                wh[0] = wh[0]+child.getWidth()+child.getMarginRight()+child.getMarginLeft();
+            }
+
+        }
+
+        if(rowStyle.getOrientation()==RowStyle.vertical){
+            //竖向布局
+            //算最大宽度
+            if(!children.isEmpty()){
+                wh[0] = children.get(0).getWidth();
+                for (int i = 0; i < children.size(); i++) {
+                    if (wh[0]<children.get(i).getWidth()+children.get(i).getMarginLeft()+children.get(i).getMarginRight()) {
+                        wh[0]=children.get(i).getWidth()+children.get(i).getMarginLeft()+children.get(i).getMarginRight();
+                    }
+                }
+            }else{
+                wh[0] = 20;
+            }
+
+            for (Content child:children) {
+                wh[1] = wh[1]+child.getHeight()+child.getMarginTop()+child.getMarginBottom();
+            }
+        }
+        return wh;
     }
 
     @Override

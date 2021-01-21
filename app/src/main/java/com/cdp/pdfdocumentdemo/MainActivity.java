@@ -9,6 +9,7 @@ import android.webkit.WebView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cdp.pdfdocumentdemo.custom.GestureSignature;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     WebView webView;
     FloatingActionButton button;
     BaseDialog baseDialog;
+    GestureSignature handler;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                         baseDialog.dismiss();
                     }
                 })));
+
     }
 
     private void initWebView() {

@@ -13,15 +13,21 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import jerry.build.pdfcreator.pdf.content.base.ParagraphFontFamily;
 import jerry.build.pdfcreator.pdf.content.build.PageHandleHolder;
 
 public class ParagraphStyle extends ContentStyle {
     private String text;
     private ParagraphFont font;
+    private float weight = 0;
 
     public static class Builder {
         ParagraphStyle contentStyle = new ParagraphStyle();
 
+        public Builder() {
+            contentStyle.setWidthMode(ContentStyle.MATCH_PARENT);
+            contentStyle.setHeightMode(ContentStyle.WRAP_CONTENT);
+        }
 
         public Builder setWidthMode(int widthMode) {
             contentStyle.setWidthMode(widthMode);
@@ -98,11 +104,24 @@ public class ParagraphStyle extends ContentStyle {
             return this;
         }
 
+
+        public Builder setWeight(float weight) {
+            contentStyle.setWeight(weight);
+            return this;
+        }
+
         public ParagraphStyle create() {
             return contentStyle;
         }
     }
 
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
 
     public void setText(String text) {
         this.text = text;
@@ -128,7 +147,7 @@ public class ParagraphStyle extends ContentStyle {
         private int fontStyle = Normal;
         @FontAlign
         private int fontAlign = TopLeft;
-        private String fontFamily = "app_font_light.ttf";
+        private String fontFamily = ParagraphFontFamily.font1;
         private Typeface typeface;
 
         public static final int Bold = 0x01;
@@ -156,6 +175,9 @@ public class ParagraphStyle extends ContentStyle {
         @interface FontAlign {
         }
 
+        public ParagraphFont() {
+        }
+
         public ParagraphFont(@ColorInt int fontColor, int fontSize, @FontStyle int fontStyle, @FontAlign int fontAlign, String fontFamily) {
             this.fontColor = fontColor;
             this.fontSize = fontSize;
@@ -174,6 +196,26 @@ public class ParagraphStyle extends ContentStyle {
             return typeface;
         }
 
+        public void setFontSize(int fontSize) {
+            this.fontSize = fontSize;
+        }
+
+        public void setFontColor(int fontColor) {
+            this.fontColor = fontColor;
+        }
+
+        public void setFontStyle(int fontStyle) {
+            this.fontStyle = fontStyle;
+        }
+
+        public void setFontAlign(int fontAlign) {
+            this.fontAlign = fontAlign;
+        }
+
+        public void setFontFamily(String fontFamily) {
+            this.fontFamily = fontFamily;
+        }
+
         public int getFontAlign() {
             return fontAlign;
         }
@@ -188,6 +230,40 @@ public class ParagraphStyle extends ContentStyle {
 
         public int getFontStyle() {
             return fontStyle;
+        }
+
+
+        public static class Builder {
+            ParagraphFont font = new ParagraphFont();
+
+            public Builder setFontSize(int fontSize) {
+                font.setFontSize(fontSize);
+                return this;
+            }
+
+            public Builder setFontColor(int fontColor) {
+                font.setFontColor(fontColor);
+                return this;
+            }
+
+            public Builder setFontStyle(int fontStyle) {
+                font.setFontStyle(fontStyle);
+                return this;
+            }
+
+            public Builder setFontAlign(int fontAlign) {
+                font.setFontAlign(fontAlign);
+                return this;
+            }
+
+            public Builder setFontFamily(String fontFamily) {
+                font.setFontFamily(fontFamily);
+                return this;
+            }
+
+            public ParagraphFont create() {
+                return font;
+            }
         }
     }
 }

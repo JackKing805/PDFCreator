@@ -54,7 +54,6 @@ public class Content extends ContentParent {
         }
         setMeasureStyle(measureWidth, measureHeight);
         measure(widthMode,heightMode,getWidth(),getHeight());
-        drawDefault(PageHandleHolder.newInstance().getCanvas());
     }
 
     @Override
