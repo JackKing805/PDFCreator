@@ -38,6 +38,12 @@ public class RowStyle extends ContentStyle {
             return this;
         }
 
+        public Builder setWeight(int weight) {
+            contentStyle.setWeight(weight);
+            return this;
+        }
+
+
         public Builder setHeightMode(int heightMode) {
             contentStyle.setHeightMode(heightMode);
             return this;

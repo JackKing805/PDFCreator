@@ -144,7 +144,7 @@ public class TestTemplate extends DefaultTemplate {
                             .setFontFamily(ParagraphFontFamily.font9)
                             .setFontColor(Color.BLACK)
                             .setFontSize(20)
-                            .setFontAlign(ParagraphStyle.ParagraphFont.CenterRight)
+                            .setFontAlign(ParagraphStyle.ParagraphFont.Center)
                         .create())
                     .create()));
 
@@ -169,14 +169,36 @@ public class TestTemplate extends DefaultTemplate {
             content.addContent(row);
         }
 
-        content.addContent(new Photo(new PhotoStyle.Builder()
-                .setSrc(PageHandleHolder.newInstance().getContext().getApplicationContext().getFilesDir().getAbsolutePath() + "/img/sign.png")
+        Row signRow = new Row(new RowStyle.Builder()
+                .setWidthMode(ContentStyle.MATCH_PARENT)
+                .setHeightMode(ContentStyle.WRAP_CONTENT)
                 .setMarginLeft(10)
-                .setMarginTop(10)
-                .setScaleType(PhotoStyle.Src)
-                .setHeight(100)
-                .setWidth(200)
-                .create()));
+                .setMarginRight(10)
+                .setOrientation(RowStyle.horizontal)
+                .create()
+        );
+
+        signRow.addContent(new Row(
+                new RowStyle.Builder()
+                        .setHeightMode(ContentStyle.MATCH_PARENT)
+                        .setWidthMode(ContentStyle.WIGHT)
+                        .setWeight(1)
+                        .setWidth(0)
+                .create()
+        ));
+
+        signRow.addContent(
+                new Photo(new PhotoStyle.Builder()
+                        .setSrc(PageHandleHolder.newInstance().getContext().getApplicationContext().getFilesDir().getAbsolutePath() + "/img/sign.png")
+                        .setMarginLeft(10)
+                        .setMarginTop(10)
+                        .setScaleType(PhotoStyle.Src)
+                        .setHeight(100)
+                        .setWidth(200)
+                        .create())
+        );
+
+        content.addContent(signRow);
     }
 
     @Override
