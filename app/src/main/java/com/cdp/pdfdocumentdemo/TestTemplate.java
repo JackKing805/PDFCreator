@@ -5,7 +5,6 @@ import android.graphics.Color;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import jerry.build.pdfcreator.bean.PageHandle;
 import jerry.build.pdfcreator.model.DefaultTemplate;
 import jerry.build.pdfcreator.pdf.content.base.ContentGroup;
 import jerry.build.pdfcreator.pdf.content.base.ParagraphFontFamily;
