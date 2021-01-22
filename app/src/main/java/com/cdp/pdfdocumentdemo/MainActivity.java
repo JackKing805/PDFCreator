@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -13,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cdp.pdfdocumentdemo.custom.GestureSignature;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         webView = findViewById(R.id.webView);
         button = findViewById(R.id.button);
         initWebView();
-        baseDialog = new BaseDialog.Builder(this,R.layout.loading_layout)
+        baseDialog = new BaseDialog.Builder(this, R.layout.loading_layout)
                 .setCancelAble(false)
                 .setCanTouchOutSide(false)
                 .setGravity(Gravity.CENTER)
@@ -58,15 +61,14 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void createSuccess(File file) {
                         loadPdfUrl(file.getAbsolutePath());
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),1500);
+                        baseDialog.dismiss();
                     }
 
                     @Override
                     public void createError(Exception e) {
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> baseDialog.dismiss(),1500);
+                        baseDialog.dismiss();
                     }
                 })));
-
     }
 
     private void initWebView() {
@@ -89,6 +91,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadPdfUrl(String pdfPath) {
-        webView.loadUrl("file:///android_asset/pdf_display_config/index.html?"+pdfPath);
+        webView.loadUrl("file:///android_asset/pdf_display_config/index.html?" + pdfPath);
     }
 }
